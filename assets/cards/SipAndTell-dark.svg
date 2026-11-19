@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 424 112" width="424" height="112"
+     role="img" aria-label="SipAndTell: Tea diary for friends, a Telegram Mini App. An experiment: I am the client, Claude writes the code">
+  <style>
+    .title{font:500 16px 'JetBrains Mono','IBM Plex Mono',Consolas,'Courier New',monospace;fill:#22C55E}
+    .desc{font:400 13px 'IBM Plex Sans','Segoe UI',Arial,sans-serif;fill:#94A3B8}
+    .foot{font:400 12px 'IBM Plex Sans','Segoe UI',Arial,sans-serif;fill:#F8FAFC}
+  </style>
+  <rect x=".5" y=".5" width="423" height="111" rx="10" fill="#1B2336" stroke="#475569"/>
+  <text x="20" y="32" class="title">SipAndTell</text>
+  <text x="20" y="58" class="desc">Tea diary for friends, a Telegram Mini App. An</text><text x="20" y="76" class="desc">experiment: I am the client, Claude writes the code</text>
+  <circle cx="26" cy="96" r="5" fill="#22C55E"/>
+  <text x="38" y="100" class="foot">Docs</text>
+  <text x="404" y="100" class="foot" text-anchor="end">★ 1</text>
+</svg>

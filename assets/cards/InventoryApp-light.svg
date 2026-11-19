@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 424 112" width="424" height="112"
+     role="img" aria-label="InventoryApp: Home inventory tool in C#">
+  <style>
+    .title{font:500 16px 'JetBrains Mono','IBM Plex Mono',Consolas,'Courier New',monospace;fill:#3F6B3A}
+    .desc{font:400 13px 'IBM Plex Sans','Segoe UI',Arial,sans-serif;fill:#6B6554}
+    .foot{font:400 12px 'IBM Plex Sans','Segoe UI',Arial,sans-serif;fill:#2B2A24}
+  </style>
+  <rect x=".5" y=".5" width="423" height="111" rx="10" fill="#EFE6D2" stroke="#D9CFB8"/>
+  <text x="20" y="32" class="title">InventoryApp</text>
+  <text x="20" y="58" class="desc">Home inventory tool in C#</text>
+  <circle cx="26" cy="96" r="5" fill="#3F6B3A"/>
+  <text x="38" y="100" class="foot">C#</text>
+  <text x="404" y="100" class="foot" text-anchor="end">★ 1</text>
+</svg>

@@ -1,0 +1,9 @@
+[
+  {"repo": "SipAndTell", "section": "current", "description": "Tea diary for friends, a Telegram Mini App. An experiment: I am the client, Claude writes the code"},
+  {"repo": "S.T.E.W.A.R.D", "section": "current", "description": "Personal utilities that create tasks in SingularityApp, and a Windows tray app that runs them"},
+  {"repo": "S.T.E.W.A.R.D.Purser", "section": "current", "description": "Python core for trading USDT perpetuals on Bybit. The system gives a signal and a position size, I make the call"},
+  {"repo": "Ekpiroza", "section": "current", "description": "Unity game prototype, my master's individual project"},
+  {"repo": "InventoryApp", "section": "current", "description": "Home inventory tool in C#"},
+  {"repo": "BottleGameAPI", "section": "finished", "description": "ASP.NET Core and PostgreSQL backend for a Telegram mini-app game, with a demo mode"},
+  {"repo": "BottleGameAdministrationPanel", "section": "finished", "description": "Admin dashboard for BottleGameAPI, in TypeScript"}
+]
