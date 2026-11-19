@@ -1,4 +1,5 @@
 [
+  {"repo": "UnifiedBand", "section": "current", "description": "One Claude Code plugin instead of many: a band above the prompt, Ponytail and a model router built in, and a local Board of usage"},
   {"repo": "SipAndTell", "section": "current", "description": "Tea diary for friends, a Telegram Mini App. An experiment: I am the client, Claude writes the code"},
   {"repo": "S.T.E.W.A.R.D", "section": "current", "description": "Personal utilities that create tasks in SingularityApp, and a Windows tray app that runs them"},
   {"repo": "S.T.E.W.A.R.D.Purser", "section": "current", "description": "Python core for trading USDT perpetuals on Bybit. The system gives a signal and a position size, I make the call"},
