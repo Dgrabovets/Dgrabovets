@@ -18,7 +18,7 @@ class SvgRenderTests(unittest.TestCase):
     """Проверяет обёртку описания, уровни графика и корректность XML"""
 
     def test_long_description_is_cut_with_ellipsis(self) -> None:
-        """Длинное описание умещается в две строки и заканчивается многоточием"""
+        """Длинное описание умещается в три строки и заканчивается многоточием"""
         lines = wrap_description("word " * 60)
 
         self.assertEqual(len(lines), DESCRIPTION_LINES)

@@ -12,14 +12,14 @@ MONO_FONT = "'JetBrains Mono','IBM Plex Mono',Consolas,'Courier New',monospace"
 SANS_FONT = "'IBM Plex Sans','Segoe UI',Arial,sans-serif"
 
 # Размер карточки проекта
-CARD_WIDTH = 424
-CARD_HEIGHT = 112
+CARD_WIDTH = 340
+CARD_HEIGHT = 132
 
 # Сколько символов описания помещается в строку карточки при шрифте 13px
-DESCRIPTION_LINE_CHARS = 52
+DESCRIPTION_LINE_CHARS = 40
 
 # Сколько строк описания показывается, остальное заменяется многоточием
-DESCRIPTION_LINES = 2
+DESCRIPTION_LINES = 3
 
 # Размер клетки графика активности и зазор между клетками
 HEAT_CELL = 16
