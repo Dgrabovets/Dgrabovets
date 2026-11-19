@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 132" width="340" height="132"
+     role="img" aria-label="UnifiedBand: One Claude Code plugin instead of many: a band above the prompt, Ponytail and a model router built in, and a local Board of usage">
+  <style>
+    .title{font:500 16px 'JetBrains Mono','IBM Plex Mono',Consolas,'Courier New',monospace;fill:#5FE08A}
+    .desc{font:400 13px 'IBM Plex Sans','Segoe UI',Arial,sans-serif;fill:#8D8B84}
+    .foot{font:400 12px 'IBM Plex Sans','Segoe UI',Arial,sans-serif;fill:#F3F2EE}
+  </style>
+  <rect x=".5" y=".5" width="339" height="131" rx="10" fill="#0C0C0C" stroke="#2A2A27"/>
+  <text x="20" y="32" class="title">UnifiedBand</text>
+  <text x="20" y="58" class="desc">One Claude Code plugin instead of many:</text><text x="20" y="76" class="desc">a band above the prompt, Ponytail and a</text><text x="20" y="94" class="desc">model router built in, and a local Boar…</text>
+  <circle cx="26" cy="116" r="5" fill="#5FE08A"/><text x="38" y="120" class="foot">TypeScript</text>
+  <text x="320" y="120" class="foot" text-anchor="end">★ 0</text>
+</svg>

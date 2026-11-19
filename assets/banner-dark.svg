@@ -2,15 +2,15 @@
   <title id="t">Aeternus</title>
   <desc id="d">Backend developer, C# and .NET. Telegram Mini Apps, APIs, gongfu tea.</desc>
   <style>
-    .name{font:700 56px 'JetBrains Mono','IBM Plex Mono',Consolas,'Courier New',monospace;fill:#F8FAFC}
-    .role{font:500 20px 'JetBrains Mono','IBM Plex Mono',Consolas,'Courier New',monospace;fill:#22C55E}
-    .meta{font:400 16px 'IBM Plex Sans','Segoe UI',Arial,sans-serif;fill:#94A3B8}
-    .steam{fill:none;stroke:#22C55E;stroke-width:3;stroke-linecap:round;opacity:0;animation:rise 4s ease-in-out infinite}
+    .name{font:700 56px 'JetBrains Mono','IBM Plex Mono',Consolas,'Courier New',monospace;fill:#F3F2EE}
+    .role{font:500 20px 'JetBrains Mono','IBM Plex Mono',Consolas,'Courier New',monospace;fill:#5FE08A}
+    .meta{font:400 16px 'IBM Plex Sans','Segoe UI',Arial,sans-serif;fill:#8D8B84}
+    .steam{fill:none;stroke:#5FE08A;stroke-width:3;stroke-linecap:round;opacity:0;animation:rise 4s ease-in-out infinite}
     .s2{animation-delay:1.3s}.s3{animation-delay:2.6s}
     @keyframes rise{0%{opacity:0;transform:translateY(8px)}30%{opacity:.8}100%{opacity:0;transform:translateY(-14px)}}
     @media (prefers-reduced-motion:reduce){.steam{animation:none;opacity:.5}}
   </style>
-  <rect x=".75" y=".75" width="878.5" height="218.5" rx="16" fill="#1B2336" stroke="#475569" stroke-width="1.5"/>
+  <rect x=".75" y=".75" width="878.5" height="218.5" rx="16" fill="#0C0C0C" stroke="#2A2A27" stroke-width="1.5"/>
   <text x="56" y="108" class="name">Aeternus</text>
   <text x="58" y="146" class="role">Backend developer · C# / .NET</text>
   <text x="58" y="180" class="meta">Telegram Mini Apps, APIs, gongfu tea. Novi Sad, Serbia.</text>
@@ -18,8 +18,8 @@
     <path class="steam" d="M30 30 q-8 -12 0 -24 q8 -12 0 -24"/>
     <path class="steam s2" d="M60 30 q-8 -12 0 -24 q8 -12 0 -24"/>
     <path class="steam s3" d="M90 30 q-8 -12 0 -24 q8 -12 0 -24"/>
-    <path d="M10 50 h100 q0 52 -50 52 q-50 0 -50 -52 z" fill="#0F172A" stroke="#22C55E" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M0 50 h120" stroke="#22C55E" stroke-width="3" stroke-linecap="round"/>
-    <path d="M35 112 h50" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+    <path d="M10 50 h100 q0 52 -50 52 q-50 0 -50 -52 z" fill="#060606" stroke="#5FE08A" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M0 50 h120" stroke="#5FE08A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M35 112 h50" stroke="#8D8B84" stroke-width="3" stroke-linecap="round"/>
   </g>
 </svg>

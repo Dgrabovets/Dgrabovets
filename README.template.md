@@ -10,7 +10,7 @@ Backend developer (C#) at ChiTech, based in Novi Sad, Serbia.
 
 ## Stack
 
-<img src="https://img.shields.io/badge/C%23-1B2336?style=flat-square&logo=csharp&logoColor=22C55E" alt="C#"> <img src="https://img.shields.io/badge/.NET-1B2336?style=flat-square&logo=dotnet&logoColor=22C55E" alt=".NET"> <img src="https://img.shields.io/badge/ASP.NET_Core-1B2336?style=flat-square&logo=dotnet&logoColor=22C55E" alt="ASP.NET Core"> <img src="https://img.shields.io/badge/PostgreSQL-1B2336?style=flat-square&logo=postgresql&logoColor=22C55E" alt="PostgreSQL"> <img src="https://img.shields.io/badge/TypeScript-1B2336?style=flat-square&logo=typescript&logoColor=22C55E" alt="TypeScript"> <img src="https://img.shields.io/badge/Python-1B2336?style=flat-square&logo=python&logoColor=22C55E" alt="Python">
+<img src="https://img.shields.io/badge/C%23-0C0C0C?style=flat-square&logo=csharp&logoColor=5FE08A" alt="C#"> <img src="https://img.shields.io/badge/.NET-0C0C0C?style=flat-square&logo=dotnet&logoColor=5FE08A" alt=".NET"> <img src="https://img.shields.io/badge/ASP.NET_Core-0C0C0C?style=flat-square&logo=dotnet&logoColor=5FE08A" alt="ASP.NET Core"> <img src="https://img.shields.io/badge/PostgreSQL-0C0C0C?style=flat-square&logo=postgresql&logoColor=5FE08A" alt="PostgreSQL"> <img src="https://img.shields.io/badge/TypeScript-0C0C0C?style=flat-square&logo=typescript&logoColor=5FE08A" alt="TypeScript"> <img src="https://img.shields.io/badge/Python-0C0C0C?style=flat-square&logo=python&logoColor=5FE08A" alt="Python">
 
 ## Current
 
