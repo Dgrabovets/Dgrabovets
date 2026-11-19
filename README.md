@@ -1,16 +1,15 @@
-## Hi there 👋
+## Привет, я Данила 👋
 
-<!--
-**Dgrabovets/Dgrabovets** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Backend-разработчик (C#), живу в Нови-Саде.
 
-Here are some ideas to get you started:
+### Стек
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+C#, .NET, ASP.NET API, PostgreSQL, TypeScript, Python
+
+### Проекты
+
+- [S.T.E.W.A.R.D](https://github.com/Dgrabovets/S.T.E.W.A.R.D) — C#
+- [Nightpour](https://github.com/Dgrabovets/Nightpour)
+- [BottleGameAPI](https://github.com/Dgrabovets/BottleGameAPI) и [BottleGameAdministrationPanel](https://github.com/Dgrabovets/BottleGameAdministrationPanel)
+- [ScreenProjector](https://github.com/Dgrabovets/ScreenProjector) — программа для вывода видео на экран с возможностью его редактирования
+- [QuizAndReactionTouchPad](https://github.com/Dgrabovets/QuizAndReactionTouchPad) — программа для выставочного стенда на ВДНХ
