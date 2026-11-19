@@ -8,7 +8,6 @@
   <rect x=".5" y=".5" width="339" height="131" rx="10" fill="#1B2336" stroke="#475569"/>
   <text x="20" y="32" class="title">S.T.E.W.A.R.D</text>
   <text x="20" y="58" class="desc">Personal utilities that create tasks in</text><text x="20" y="76" class="desc">SingularityApp, and a Windows tray app</text><text x="20" y="94" class="desc">that runs them</text>
-  <circle cx="26" cy="116" r="5" fill="#22C55E"/>
-  <text x="38" y="120" class="foot">C#</text>
+  <circle cx="26" cy="116" r="5" fill="#22C55E"/><text x="38" y="120" class="foot">C#</text>
   <text x="320" y="120" class="foot" text-anchor="end">★ 1</text>
 </svg>

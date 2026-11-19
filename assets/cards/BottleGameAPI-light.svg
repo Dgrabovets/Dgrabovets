@@ -8,7 +8,6 @@
   <rect x=".5" y=".5" width="339" height="131" rx="10" fill="#EFE6D2" stroke="#D9CFB8"/>
   <text x="20" y="32" class="title">BottleGameAPI</text>
   <text x="20" y="58" class="desc">ASP.NET Core and PostgreSQL backend for</text><text x="20" y="76" class="desc">a Telegram mini-app game, with a demo</text><text x="20" y="94" class="desc">mode</text>
-  <circle cx="26" cy="116" r="5" fill="#3F6B3A"/>
-  <text x="38" y="120" class="foot">C#</text>
+  <circle cx="26" cy="116" r="5" fill="#3F6B3A"/><text x="38" y="120" class="foot">C#</text>
   <text x="320" y="120" class="foot" text-anchor="end">★ 1</text>
 </svg>

@@ -148,6 +148,10 @@ def render_card(project: Project, theme: Theme) -> str:
     lines = "".join(f'<text x="{CARD_PADDING}" y="{CARD_DESCRIPTION_Y + index * CARD_LINE_HEIGHT}" class="desc">{escape(line)}</text>'
                     for index, line in enumerate(wrap_description(project.description)))
     footer_y = CARD_HEIGHT - CARD_FOOTER_OFFSET
+    language = (f'<circle cx="{CARD_PADDING + 6}" cy="{footer_y - 4}" r="5" fill="{theme.accent}"/>'
+                f'<text x="{CARD_PADDING + 18}" y="{footer_y}" class="foot">{escape(project.language)}</text>'
+                if project.language
+                else "")
     label = escape(f"{project.repo}: {project.description}", {'"': "&quot;"})
 
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {CARD_WIDTH} {CARD_HEIGHT}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}"
@@ -160,8 +164,7 @@ def render_card(project: Project, theme: Theme) -> str:
   <rect x=".5" y=".5" width="{CARD_WIDTH - 1}" height="{CARD_HEIGHT - 1}" rx="10" fill="{theme.card}" stroke="{theme.border}"/>
   <text x="{CARD_PADDING}" y="{CARD_TITLE_Y}" class="title">{escape(project.repo)}</text>
   {lines}
-  <circle cx="{CARD_PADDING + 6}" cy="{footer_y - 4}" r="5" fill="{theme.accent}"/>
-  <text x="{CARD_PADDING + 18}" y="{footer_y}" class="foot">{escape(project.language or "Docs")}</text>
+  {language}
   <text x="{CARD_WIDTH - CARD_PADDING}" y="{footer_y}" class="foot" text-anchor="end">★ {project.stars}</text>
 </svg>
 """

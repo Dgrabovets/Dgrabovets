@@ -8,7 +8,6 @@
   <rect x=".5" y=".5" width="339" height="131" rx="10" fill="#1B2336" stroke="#475569"/>
   <text x="20" y="32" class="title">SipAndTell</text>
   <text x="20" y="58" class="desc">Tea diary for friends, a Telegram Mini</text><text x="20" y="76" class="desc">App. An experiment: I am the client,</text><text x="20" y="94" class="desc">Claude writes the code</text>
-  <circle cx="26" cy="116" r="5" fill="#22C55E"/>
-  <text x="38" y="120" class="foot">Docs</text>
+  
   <text x="320" y="120" class="foot" text-anchor="end">★ 1</text>
 </svg>

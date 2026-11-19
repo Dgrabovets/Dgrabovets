@@ -8,7 +8,6 @@
   <rect x=".5" y=".5" width="339" height="131" rx="10" fill="#EFE6D2" stroke="#D9CFB8"/>
   <text x="20" y="32" class="title">S.T.E.W.A.R.D.Purser</text>
   <text x="20" y="58" class="desc">Python core for trading USDT perpetuals</text><text x="20" y="76" class="desc">on Bybit. The system gives a signal and</text><text x="20" y="94" class="desc">a position size, I make the call</text>
-  <circle cx="26" cy="116" r="5" fill="#3F6B3A"/>
-  <text x="38" y="120" class="foot">Python</text>
+  <circle cx="26" cy="116" r="5" fill="#3F6B3A"/><text x="38" y="120" class="foot">Python</text>
   <text x="320" y="120" class="foot" text-anchor="end">★ 1</text>
 </svg>
