@@ -6,7 +6,7 @@
   </style>
   <rect x=".75" y=".75" width="878.5" height="328.5" rx="16"
         fill="#1B2336" stroke="#475569" stroke-width="1.5"/>
-  <text x="56" y="62" class="num">13</text><text x="56" y="84" class="lab">stars earned</text><text x="336" y="62" class="num">295</text><text x="336" y="84" class="lab">commits in the last year</text><text x="616" y="62" class="num">36</text><text x="616" y="84" class="lab">pull requests</text>
+  <text x="56" y="62" class="num">13</text><text x="56" y="84" class="lab">stars earned</text><text x="336" y="62" class="num">296</text><text x="336" y="84" class="lab">commits in the last year</text><text x="616" y="62" class="num">36</text><text x="616" y="84" class="lab">pull requests</text>
   <clipPath id="bar"><rect x="56" y="116" width="768" height="10" rx="5"/></clipPath>
   <g clip-path="url(#bar)"><rect x="56.0" y="116" width="658.6" height="10" fill="#22C55E"/><rect x="714.6" y="116" width="66.9" height="10" fill="#38BDF8"/><rect x="781.6" y="116" width="34.9" height="10" fill="#A78BFA"/><rect x="816.4" y="116" width="4.1" height="10" fill="#F59E0B"/><rect x="820.5" y="116" width="2.1" height="10" fill="#F472B6"/></g>
   <circle cx="62" cy="150" r="5" fill="#22C55E"/><text x="74" y="154" class="lab">C# 86%</text><circle cx="222" cy="150" r="5" fill="#38BDF8"/><text x="234" y="154" class="lab">TypeScript 9%</text><circle cx="382" cy="150" r="5" fill="#A78BFA"/><text x="394" y="154" class="lab">Python 5%</text><circle cx="542" cy="150" r="5" fill="#F59E0B"/><text x="554" y="154" class="lab">CSS 1%</text><circle cx="702" cy="150" r="5" fill="#F472B6"/><text x="714" y="154" class="lab">PowerShell 0%</text>
