@@ -2,11 +2,16 @@
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/about-dark.svg"><img src="assets/headings/about-light.svg" alt="About"></picture>
 
-Backend developer (C# / .NET) at ChiTech, based in Novi Sad, Serbia. Focus: APIs, high-load services and integrations.
+**At work, ChiTech**
 
-- Bachelor's degree with honours in Applied Informatics, RANEPA (Moscow)
-- Master's student at RANEPA (Applied Informatics, game design)
-- Interests: gongfu tea, hiking and trekking, learning Serbian
+- Delivery integrations, including Yandex: shipment registration, status exchange, shipping documents
+- Marketplace integrations: Kuper, Ozon, Wildberries, T-Shop
+- Order picking and handover for marketplace orders in the company's stores
+- A VAT rate change across 10+ systems, delivered on time with my team
+
+I'm based in Novi Sad and open to relocation. I studied applied informatics at RANEPA (honours). Master's student in game design at RANEPA. 
+
+Away from code: travelling (30+ countries so far), hiking and trekking, weightlifting.
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/stack-dark.svg"><img src="assets/headings/stack-light.svg" alt="Stack"></picture>
 
@@ -14,7 +19,14 @@ Backend developer (C# / .NET) at ChiTech, based in Novi Sad, Serbia. Focus: APIs
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/csharp-dark.svg"><img src="assets/badges/csharp-light.svg" alt="C#"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/dotnet-dark.svg"><img src="assets/badges/dotnet-light.svg" alt=".NET"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/aspnet-core-dark.svg"><img src="assets/badges/aspnet-core-light.svg" alt="ASP.NET Core"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/ef-core-dark.svg"><img src="assets/badges/ef-core-light.svg" alt="Entity Framework Core"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/sql-server-dark.svg"><img src="assets/badges/sql-server-light.svg" alt="SQL Server"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/postgresql-dark.svg"><img src="assets/badges/postgresql-light.svg" alt="PostgreSQL"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/kafka-dark.svg"><img src="assets/badges/kafka-light.svg" alt="Kafka"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/rabbitmq-dark.svg"><img src="assets/badges/rabbitmq-light.svg" alt="RabbitMQ"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/docker-dark.svg"><img src="assets/badges/docker-light.svg" alt="Docker"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/ci-cd-dark.svg"><img src="assets/badges/ci-cd-light.svg" alt="CI/CD"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/automated-tests-dark.svg"><img src="assets/badges/automated-tests-light.svg" alt="Automated tests"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/typescript-dark.svg"><img src="assets/badges/typescript-light.svg" alt="TypeScript"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/python-dark.svg"><img src="assets/badges/python-light.svg" alt="Python"></picture>
 </p>
