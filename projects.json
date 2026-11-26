@@ -1,9 +1,10 @@
 [
-  {"repo": "SipAndTell", "section": "current", "description": "Tea diary for friends, a Telegram Mini App. An experiment: I am the client, Claude writes the code"},
+  {"repo": "UnifiedBand", "section": "current", "description": "Claude Code plugin: a band above the prompt, Ponytail and a model router built in, and a local usage Board"},
+  {"repo": "SipAndTell", "section": "current", "description": "Tea diary for friends, a Telegram Mini App. An experiment: I am the client; Claude writes the code", "label": "Design stage"},
   {"repo": "S.T.E.W.A.R.D", "section": "current", "description": "Personal utilities that create tasks in SingularityApp, and a Windows tray app that runs them"},
-  {"repo": "S.T.E.W.A.R.D.Purser", "section": "current", "description": "Python core for trading USDT perpetuals on Bybit. The system gives a signal and a position size, I make the call"},
-  {"repo": "Ekpiroza", "section": "current", "description": "Unity game prototype, my master's individual project"},
-  {"repo": "InventoryApp", "section": "current", "description": "Home inventory tool in C#"},
+  {"repo": "S.T.E.W.A.R.D.Purser", "section": "current", "description": "Python core for trading USDT perpetuals on Bybit. It computes the signal and position size; I make the call"},
+  {"repo": "Ekpiroza", "section": "current", "description": "Unity project for my master's individual game, at an early setup stage", "label": "Unity"},
+  {"repo": "InventoryApp", "section": "current", "description": "Home inventory app built with .NET MAUI and SQLite"},
   {"repo": "BottleGameAPI", "section": "finished", "description": "ASP.NET Core and PostgreSQL backend for a Telegram mini-app game, with a demo mode"},
-  {"repo": "BottleGameAdministrationPanel", "section": "finished", "description": "Admin dashboard for BottleGameAPI, in TypeScript"}
+  {"repo": "BottleGameAdministrationPanel", "section": "finished", "description": "Admin panel for BottleGameAPI, built with Next.js and TypeScript"}
 ]

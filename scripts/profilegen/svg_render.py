@@ -1,59 +1,121 @@
-"""Отрисовка SVG: баннер, карточки проектов и статистика"""
+"""Отрисовка SVG: баннер, заголовки разделов, значки стека, карточки проектов и статистика"""
 
 import textwrap
+from pathlib import Path
 from xml.sax.saxutils import escape
 
+from .font_enum import FontEnum
+from .glyph_text import printable, text_path, text_width
 from .profile_stats import ProfileStats
 from .project import Project
 from .theme import Theme
 
-# Шрифты без внешней загрузки: GitHub не подгружает веб-шрифты в SVG
-MONO_FONT = "'JetBrains Mono','IBM Plex Mono',Consolas,'Courier New',monospace"
-SANS_FONT = "'IBM Plex Sans','Segoe UI',Arial,sans-serif"
+# Готовая шапка бренда с текстом в контурах и анимированной петлёй, копия `assets/header-dark.svg` из папки бренда
+BANNER_PATH = Path(__file__).with_name("header.svg")
+
+# Скругления рамок: заголовки и значки, карточки и плитки, блок статистики как у шапки
+SMALL_RADIUS = 8
+CARD_RADIUS = 12
+BLOCK_RADIUS = 16
+
+# Толщина рамки: половина уходит внутрь отступа, чтобы линия не обрезалась краем
+BORDER_WIDTH = 1.5
 
 # Размер карточки проекта
 CARD_WIDTH = 340
-CARD_HEIGHT = 132
+CARD_HEIGHT = 148
 
-# Сколько символов описания помещается в строку карточки при шрифте 13px
-DESCRIPTION_LINE_CHARS = 40
+# Сколько символов описания помещается в строку карточки при `CARD_DESCRIPTION_SIZE`
+DESCRIPTION_LINE_CHARS = 44
 
 # Сколько строк описания показывается, остальное заменяется многоточием
 DESCRIPTION_LINES = 3
 
+# Подписи под числами статистики
+COMMITS_CAPTION = "commits in the last year"
+PULL_REQUESTS_CAPTION = "pull requests in the last year"
+
 # Размер клетки графика активности и зазор между клетками
 HEAT_CELL = 16
 HEAT_GAP = 3
+HEAT_RADIUS = 3
 
 # Прозрачность клеток графика на уровнях 0..4, от пустой до самой активной
-HEAT_ALPHAS = (0.35, 0.3, 0.55, 0.8, 1.0)
+HEAT_ALPHAS = (0.6, 0.3, 0.55, 0.8, 1.0)
 
 # Верхние границы числа вкладов за день для уровней 1..3, всё выше это уровень 4
 HEAT_LEVEL_LIMITS = (1, 4, 8)
 
-# Поля и отступы карточки проекта в пикселях
+# Поля и базовые линии карточки проекта в пикселях
 CARD_PADDING = 20
-CARD_TITLE_Y = 32
-CARD_DESCRIPTION_Y = 58
-CARD_LINE_HEIGHT = 18
-CARD_FOOTER_OFFSET = 12
+CARD_TITLE_Y = 34
+CARD_DESCRIPTION_Y = 62
+CARD_LINE_HEIGHT = 19
+CARD_LABEL_Y = 132
 
-# Размер блока статистики: ширина равна ширине баннера, высота вмещает числа, полосу языков и 7 рядов графика
+# Размеры шрифтов карточки: название, описание, подпись языка
+CARD_TITLE_SIZE = 15
+CARD_DESCRIPTION_SIZE = 13
+CARD_LABEL_SIZE = 12
+
+# Акцентная черта слева от названия, как на карточках баннера бренда
+CARD_MARK_X = 1.5
+CARD_MARK_Y = 20
+CARD_MARK_WIDTH = 4
+CARD_MARK_HEIGHT = 18
+
+# Заголовок раздела: высота, поле, зазор после акцентной черты и разрядка букв как у подписи в шапке
+HEADING_HEIGHT = 34
+HEADING_PADDING = 14
+HEADING_GAP = 12
+HEADING_SPACING = 4
+HEADING_FONT_SIZE = 14
+HEADING_TEXT_Y = 22
+
+# Акцентная черта из шапки бренда и скругление акцентных черт
+ACCENT_BAR_WIDTH = 28
+ACCENT_BAR_HEIGHT = 4
+ACCENT_RADIUS = 2
+
+# Значок стека: высота, левое поле под вертикальную черту, правое поле и размер шрифта
+BADGE_HEIGHT = 28
+BADGE_TEXT_X = 22
+BADGE_PADDING = 12
+BADGE_FONT_SIZE = 12
+BADGE_TEXT_Y = 18
+
+# Вертикальная акцентная черта значка
+BADGE_MARK_X = 10
+BADGE_MARK_Y = 8
+BADGE_MARK_WIDTH = 4
+BADGE_MARK_HEIGHT = 12
+
+# Размер блока статистики: ширина равна ширине баннера, высота вмещает плитки, полосу языков и 7 рядов графика
 STATS_WIDTH = 880
-STATS_HEIGHT = 330
+STATS_HEIGHT = 346
 
-# Раскладка блока статистики: левое поле, шаг колонок чисел, базовые линии чисел и подписей
-STATS_PADDING = 56
-METRIC_STEP = 280
-METRIC_VALUE_Y = 62
-METRIC_LABEL_Y = 84
+# Раскладка статистики: боковое поле центрирует график из 40 недель, затем плитки с числами
+STATS_PADDING = 62
+TILE_Y = 24
+TILE_HEIGHT = 88
+TILE_GAP = 16
+
+# Внутри плитки: левое поле, базовые линии и размеры числа и подписи
+TILE_PADDING = 20
+TILE_VALUE_Y = 46
+TILE_CAPTION_Y = 70
+TILE_VALUE_SIZE = 34
+STATS_FONT_SIZE = 13
 
 # Полоса языков, её легенда и верх графика активности
-BAR_Y = 116
+BAR_Y = 134
 BAR_HEIGHT = 10
-LEGEND_Y = 150
-LEGEND_STEP = 160
-HEAT_TOP = 184
+LEGEND_Y = 168
+LEGEND_GAP = 28
+LEGEND_DOT_RADIUS = 5
+LEGEND_TEXT_X = 17
+LEGEND_DOT_RISE = 4
+HEAT_TOP = 190
 
 
 # region Helpers
@@ -94,45 +156,127 @@ def heat_level(count: int) -> int:
             return level
 
     return len(HEAT_LEVEL_LIMITS) + 1
+
+
+def _share(percent: float) -> str:
+    """Пишет долю языка целым числом
+
+    Args:
+        percent: Доля в процентах
+
+    Returns:
+        Процент, а для долей меньше одного `<1%`, чтобы язык не выглядел отсутствующим
+    """
+    return f"{percent:.0f}%" if percent >= 1 else "<1%"
+
+
+def _svg(width: float,
+         height: int,
+         label: str,
+         body: str) -> str:
+    """Оборачивает содержимое в SVG с подписью для экранных дикторов
+
+    Args:
+        width: Ширина
+        height: Высота
+        label: Текст картинки
+        body: Внутренние элементы
+
+    Returns:
+        Текст SVG
+    """
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width:g} {height}" width="{width:g}" height="{height}" '
+            f'role="img" aria-label="{escape(label, {chr(34): "&quot;"})}">\n{body}\n</svg>\n')
+
+
+def _box(x: float,
+         y: float,
+         width: float,
+         height: int,
+         radius: int,
+         fill: str,
+         border: str) -> str:
+    """Рисует прямоугольник с тонкой рамкой целиком внутри заданных границ
+
+    Args:
+        x: Левый край
+        y: Верхний край
+        width: Ширина
+        height: Высота
+        radius: Скругление
+        fill: Заливка
+        border: Цвет рамки
+
+    Returns:
+        Элемент `rect`
+    """
+    inset = BORDER_WIDTH / 2
+
+    return (f'<rect x="{x + inset:g}" y="{y + inset:g}" width="{width - BORDER_WIDTH:g}" height="{height - BORDER_WIDTH:g}" '
+            f'rx="{radius}" fill="{fill}" stroke="{border}" stroke-width="{BORDER_WIDTH:g}"/>')
+
+def _language_caption(language: str, percent: float) -> str:
+    """Собирает подпись языка для легенды и описания
+
+    Args:
+        language: Название языка из GitHub
+        percent: Доля в процентах
+
+    Returns:
+        Название и доля
+    """
+    return f"{printable(language, FontEnum.SANS_REGULAR)} {_share(percent)}"
 # endregion Helpers
 
 
 # region Rendering
-def render_banner(theme: Theme) -> str:
-    """Рисует баннер с именем и паром над гайванем
+def render_banner() -> str:
+    """Читает шапку бренда, она одна на обе темы
+
+    Returns:
+        Текст SVG
+    """
+    return BANNER_PATH.read_text(encoding="utf-8")
+
+
+def render_heading(title: str, theme: Theme) -> str:
+    """Рисует заголовок раздела: акцентная черта и заглавные буквы вразрядку
 
     Args:
+        title: Название раздела
         theme: Тема оформления
 
     Returns:
         Текст SVG
     """
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 220" width="880" height="220" role="img" aria-labelledby="t d">
-  <title id="t">Aeternus</title>
-  <desc id="d">Backend developer, C# and .NET. Telegram Mini Apps, APIs, gongfu tea.</desc>
-  <style>
-    .name{{font:700 56px {MONO_FONT};fill:{theme.foreground}}}
-    .role{{font:500 20px {MONO_FONT};fill:{theme.accent}}}
-    .meta{{font:400 16px {SANS_FONT};fill:{theme.muted}}}
-    .steam{{fill:none;stroke:{theme.accent};stroke-width:3;stroke-linecap:round;opacity:0;animation:rise 4s ease-in-out infinite}}
-    .s2{{animation-delay:1.3s}}.s3{{animation-delay:2.6s}}
-    @keyframes rise{{0%{{opacity:0;transform:translateY(8px)}}30%{{opacity:.8}}100%{{opacity:0;transform:translateY(-14px)}}}}
-    @media (prefers-reduced-motion:reduce){{.steam{{animation:none;opacity:.5}}}}
-  </style>
-  <rect x=".75" y=".75" width="878.5" height="218.5" rx="16" fill="{theme.card}" stroke="{theme.border}" stroke-width="1.5"/>
-  <text x="56" y="108" class="name">Aeternus</text>
-  <text x="58" y="146" class="role">Backend developer · C# / .NET</text>
-  <text x="58" y="180" class="meta">Telegram Mini Apps, APIs, gongfu tea. Novi Sad, Serbia.</text>
-  <g transform="translate(700 70)">
-    <path class="steam" d="M30 30 q-8 -12 0 -24 q8 -12 0 -24"/>
-    <path class="steam s2" d="M60 30 q-8 -12 0 -24 q8 -12 0 -24"/>
-    <path class="steam s3" d="M90 30 q-8 -12 0 -24 q8 -12 0 -24"/>
-    <path d="M10 50 h100 q0 52 -50 52 q-50 0 -50 -52 z" fill="{theme.background}" stroke="{theme.accent}" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M0 50 h120" stroke="{theme.accent}" stroke-width="3" stroke-linecap="round"/>
-    <path d="M35 112 h50" stroke="{theme.muted}" stroke-width="3" stroke-linecap="round"/>
-  </g>
-</svg>
-"""
+    caps = title.upper()
+    text_x = HEADING_PADDING + ACCENT_BAR_WIDTH + HEADING_GAP
+    width = round(text_x + text_width(caps, FontEnum.MONO_MEDIUM, HEADING_FONT_SIZE, HEADING_SPACING) + HEADING_PADDING)
+
+    return _svg(width, HEADING_HEIGHT, title,
+                _box(0, 0, width, HEADING_HEIGHT, SMALL_RADIUS, theme.background, theme.border)
+                + f'<rect x="{HEADING_PADDING}" y="{(HEADING_HEIGHT - ACCENT_BAR_HEIGHT) // 2}" width="{ACCENT_BAR_WIDTH}" '
+                  f'height="{ACCENT_BAR_HEIGHT}" rx="{ACCENT_RADIUS}" fill="{theme.accent}"/>'
+                + text_path(caps, text_x, HEADING_TEXT_Y, FontEnum.MONO_MEDIUM, HEADING_FONT_SIZE, theme.accent, HEADING_SPACING))
+
+
+def render_badge(label: str, theme: Theme) -> str:
+    """Рисует значок технологии
+
+    Args:
+        label: Название технологии
+        theme: Тема оформления
+
+    Returns:
+        Текст SVG
+    """
+    width = round(BADGE_TEXT_X + text_width(label, FontEnum.MONO_MEDIUM, BADGE_FONT_SIZE) + BADGE_PADDING)
+
+    return _svg(width, BADGE_HEIGHT, label,
+                _box(0, 0, width, BADGE_HEIGHT, SMALL_RADIUS, theme.card, theme.border)
+                + f'<rect x="{BADGE_MARK_X}" y="{BADGE_MARK_Y}" width="{BADGE_MARK_WIDTH}" height="{BADGE_MARK_HEIGHT}" '
+                  f'rx="{ACCENT_RADIUS}" fill="{theme.accent}"/>'
+                + text_path(label, BADGE_TEXT_X, BADGE_TEXT_Y, FontEnum.MONO_MEDIUM, BADGE_FONT_SIZE, theme.foreground))
 
 
 def render_card(project: Project, theme: Theme) -> str:
@@ -145,33 +289,24 @@ def render_card(project: Project, theme: Theme) -> str:
     Returns:
         Текст SVG
     """
-    lines = "".join(f'<text x="{CARD_PADDING}" y="{CARD_DESCRIPTION_Y + index * CARD_LINE_HEIGHT}" class="desc">{escape(line)}</text>'
+    lines = "".join(text_path(line, CARD_PADDING, CARD_DESCRIPTION_Y + index * CARD_LINE_HEIGHT,
+                              FontEnum.SANS_REGULAR, CARD_DESCRIPTION_SIZE, theme.muted)
                     for index, line in enumerate(wrap_description(project.description)))
-    footer_y = CARD_HEIGHT - CARD_FOOTER_OFFSET
-    language = (f'<circle cx="{CARD_PADDING + 6}" cy="{footer_y - 4}" r="5" fill="{theme.accent}"/>'
-                f'<text x="{CARD_PADDING + 18}" y="{footer_y}" class="foot">{escape(project.language)}</text>'
-                if project.language
-                else "")
-    label = escape(f"{project.repo}: {project.description}", {'"': "&quot;"})
+    label = printable(project.label, FontEnum.MONO_MEDIUM)
+    footer = (text_path(label, CARD_PADDING, CARD_LABEL_Y, FontEnum.MONO_MEDIUM, CARD_LABEL_SIZE, theme.accent)
+              if label
+              else "")
 
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {CARD_WIDTH} {CARD_HEIGHT}" width="{CARD_WIDTH}" height="{CARD_HEIGHT}"
-     role="img" aria-label="{label}">
-  <style>
-    .title{{font:500 16px {MONO_FONT};fill:{theme.accent}}}
-    .desc{{font:400 13px {SANS_FONT};fill:{theme.muted}}}
-    .foot{{font:400 12px {SANS_FONT};fill:{theme.foreground}}}
-  </style>
-  <rect x=".5" y=".5" width="{CARD_WIDTH - 1}" height="{CARD_HEIGHT - 1}" rx="10" fill="{theme.card}" stroke="{theme.border}"/>
-  <text x="{CARD_PADDING}" y="{CARD_TITLE_Y}" class="title">{escape(project.repo)}</text>
-  {lines}
-  {language}
-  <text x="{CARD_WIDTH - CARD_PADDING}" y="{footer_y}" class="foot" text-anchor="end">★ {project.stars}</text>
-</svg>
-"""
+    return _svg(CARD_WIDTH, CARD_HEIGHT, f"{project.repo}: {project.description}",
+                _box(0, 0, CARD_WIDTH, CARD_HEIGHT, CARD_RADIUS, theme.card, theme.border)
+                + f'<rect x="{CARD_MARK_X}" y="{CARD_MARK_Y}" width="{CARD_MARK_WIDTH}" height="{CARD_MARK_HEIGHT}" fill="{theme.accent}"/>'
+                + text_path(project.repo, CARD_PADDING, CARD_TITLE_Y, FontEnum.MONO_BOLD, CARD_TITLE_SIZE, theme.foreground)
+                + lines
+                + footer)
 
 
 def render_stats(stats: ProfileStats, theme: Theme) -> str:
-    """Рисует блок статистики: числа, языки, график активности
+    """Рисует блок статистики: плитки с числами, языки, график активности
 
     Args:
         stats: Статистика профиля
@@ -180,24 +315,33 @@ def render_stats(stats: ProfileStats, theme: Theme) -> str:
     Returns:
         Текст SVG
     """
-    metrics = "".join(f'<text x="{STATS_PADDING + index * METRIC_STEP}" y="{METRIC_VALUE_Y}" class="num">{value}</text>'
-                      f'<text x="{STATS_PADDING + index * METRIC_STEP}" y="{METRIC_LABEL_Y}" class="lab">{label}</text>'
-                      for index, (value, label) in enumerate([(stats.stars, "stars earned"),
-                                                              (stats.commits, "commits in the last year"),
-                                                              (stats.pull_requests, "pull requests")]))
-    bar_width = STATS_WIDTH - 2 * STATS_PADDING
+    metrics = [(stats.commits, COMMITS_CAPTION), (stats.pull_requests, PULL_REQUESTS_CAPTION)]
+    content_width = STATS_WIDTH - 2 * STATS_PADDING
+    tile_width = (content_width - TILE_GAP * (len(metrics) - 1)) / len(metrics)
+    tiles = ""
+
+    for index, (value, caption) in enumerate(metrics):
+        x = STATS_PADDING + index * (tile_width + TILE_GAP)
+        tiles += (_box(x, TILE_Y, tile_width, TILE_HEIGHT, CARD_RADIUS, theme.card, theme.border)
+                  + text_path(str(value), x + TILE_PADDING, TILE_Y + TILE_VALUE_Y, FontEnum.MONO_BOLD, TILE_VALUE_SIZE, theme.accent)
+                  + text_path(caption, x + TILE_PADDING, TILE_Y + TILE_CAPTION_Y, FontEnum.SANS_REGULAR, STATS_FONT_SIZE, theme.muted))
+
     bar = ""
     legend = ""
     offset = 0.0
+    legend_x = float(STATS_PADDING)
 
     for index, (language, percent) in enumerate(stats.languages):
         color = theme.language_colors[index % len(theme.language_colors)]
-        width = bar_width * percent / 100
-        legend_x = STATS_PADDING + index * LEGEND_STEP
+        width = content_width * percent / 100
+        caption = _language_caption(language, percent)
+
         bar += f'<rect x="{STATS_PADDING + offset:.1f}" y="{BAR_Y}" width="{width:.1f}" height="{BAR_HEIGHT}" fill="{color}"/>'
-        legend += (f'<circle cx="{legend_x + 6}" cy="{LEGEND_Y}" r="5" fill="{color}"/>'
-                   f'<text x="{legend_x + 18}" y="{LEGEND_Y + 4}" class="lab">{escape(language)} {percent:.0f}%</text>')
+        legend += (f'<circle cx="{legend_x + LEGEND_DOT_RADIUS:.1f}" cy="{LEGEND_Y - LEGEND_DOT_RISE}" r="{LEGEND_DOT_RADIUS}" fill="{color}"/>'
+                   + text_path(caption, round(legend_x + LEGEND_TEXT_X, 1), LEGEND_Y, FontEnum.SANS_REGULAR, STATS_FONT_SIZE, theme.muted))
+
         offset += width
+        legend_x += LEGEND_TEXT_X + text_width(caption, FontEnum.SANS_REGULAR, STATS_FONT_SIZE) + LEGEND_GAP
 
     cells = ""
 
@@ -205,22 +349,19 @@ def render_stats(stats: ProfileStats, theme: Theme) -> str:
         for row, count in enumerate(week):
             level = heat_level(count)
             cells += (f'<rect x="{STATS_PADDING + column * (HEAT_CELL + HEAT_GAP)}" y="{HEAT_TOP + row * (HEAT_CELL + HEAT_GAP)}" '
-                      f'width="{HEAT_CELL}" height="{HEAT_CELL}" rx="3" fill="{theme.accent if level else theme.border}" '
+                      f'width="{HEAT_CELL}" height="{HEAT_CELL}" rx="{HEAT_RADIUS}" fill="{theme.accent if level else theme.border}" '
                       f'fill-opacity="{HEAT_ALPHAS[level]}"/>')
 
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {STATS_WIDTH} {STATS_HEIGHT}" width="{STATS_WIDTH}" height="{STATS_HEIGHT}"
-     role="img" aria-label="GitHub statistics">
-  <style>
-    .num{{font:700 36px {MONO_FONT};fill:{theme.accent}}}
-    .lab{{font:400 13px {SANS_FONT};fill:{theme.muted}}}
-  </style>
-  <rect x=".75" y=".75" width="{STATS_WIDTH - 1.5}" height="{STATS_HEIGHT - 1.5}" rx="16"
-        fill="{theme.card}" stroke="{theme.border}" stroke-width="1.5"/>
-  {metrics}
-  <clipPath id="bar"><rect x="{STATS_PADDING}" y="{BAR_Y}" width="{bar_width}" height="{BAR_HEIGHT}" rx="5"/></clipPath>
-  <g clip-path="url(#bar)">{bar}</g>
-  {legend}
-  {cells}
-</svg>
-"""
+    # Числа и языки повторены в подписи: контуры букв экранный диктор не прочитает
+    description = ", ".join([f"{value} {caption}" for value, caption in metrics]
+                            + [_language_caption(language, percent) for language, percent in stats.languages])
+
+    return _svg(STATS_WIDTH, STATS_HEIGHT, f"GitHub statistics: {description}",
+                _box(0, 0, STATS_WIDTH, STATS_HEIGHT, BLOCK_RADIUS, theme.background, theme.border)
+                + tiles
+                + f'<clipPath id="bar"><rect x="{STATS_PADDING}" y="{BAR_Y}" width="{content_width}" height="{BAR_HEIGHT}" '
+                  f'rx="{BAR_HEIGHT // 2}"/></clipPath>'
+                  f'<g clip-path="url(#bar)">{bar}</g>'
+                + legend
+                + cells)
 # endregion Rendering

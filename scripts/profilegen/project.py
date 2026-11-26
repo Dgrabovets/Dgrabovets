@@ -10,5 +10,5 @@ class Project:
     repo: str
     section: str
     description: str
-    language: str
-    stars: int
+    # Подпись внизу карточки: язык из GitHub, а если его нет, значение из projects.json
+    label: str

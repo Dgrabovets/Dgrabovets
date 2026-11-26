@@ -1,32 +1,43 @@
-<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg"><img src="assets/banner-light.svg" alt="Aeternus, backend developer, C# and .NET" width="100%"></picture></p>
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg"><img src="assets/banner-light.svg" alt="Aeternus. Backend developer, C# / .NET. APIs, high-load services, integrations. Backend systems made to keep running." width="100%"></picture></p>
 
-## Hi, I'm Aeternus
+## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/about-dark.svg"><img src="assets/headings/about-light.svg" alt="About"></picture>
 
-Backend developer (C#) at ChiTech, based in Novi Sad, Serbia.
+Backend developer (C# / .NET) at ChiTech, based in Novi Sad, Serbia. Focus: APIs, high-load services and integrations.
 
 - Bachelor's degree with honours in Applied Informatics, RANEPA (Moscow)
 - Master's student at RANEPA (Applied Informatics, game design)
 - Interests: gongfu tea, hiking and trekking, learning Serbian
 
-## Stack
+## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/stack-dark.svg"><img src="assets/headings/stack-light.svg" alt="Stack"></picture>
 
-<img src="https://img.shields.io/badge/C%23-1B2336?style=flat-square&logo=csharp&logoColor=22C55E" alt="C#"> <img src="https://img.shields.io/badge/.NET-1B2336?style=flat-square&logo=dotnet&logoColor=22C55E" alt=".NET"> <img src="https://img.shields.io/badge/ASP.NET_Core-1B2336?style=flat-square&logo=dotnet&logoColor=22C55E" alt="ASP.NET Core"> <img src="https://img.shields.io/badge/PostgreSQL-1B2336?style=flat-square&logo=postgresql&logoColor=22C55E" alt="PostgreSQL"> <img src="https://img.shields.io/badge/TypeScript-1B2336?style=flat-square&logo=typescript&logoColor=22C55E" alt="TypeScript"> <img src="https://img.shields.io/badge/Python-1B2336?style=flat-square&logo=python&logoColor=22C55E" alt="Python">
+<p>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/csharp-dark.svg"><img src="assets/badges/csharp-light.svg" alt="C#"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/dotnet-dark.svg"><img src="assets/badges/dotnet-light.svg" alt=".NET"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/aspnet-core-dark.svg"><img src="assets/badges/aspnet-core-light.svg" alt="ASP.NET Core"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/postgresql-dark.svg"><img src="assets/badges/postgresql-light.svg" alt="PostgreSQL"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/typescript-dark.svg"><img src="assets/badges/typescript-light.svg" alt="TypeScript"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/python-dark.svg"><img src="assets/badges/python-light.svg" alt="Python"></picture>
+</p>
 
-## Current
+## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/current-dark.svg"><img src="assets/headings/current-light.svg" alt="Current"></picture>
 
-<table>
-<tr><td width="50%"><a href="https://github.com/Dgrabovets/SipAndTell"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/SipAndTell-dark.svg"><img src="assets/cards/SipAndTell-light.svg" alt="SipAndTell" width="100%"></picture></a></td><td width="50%"><a href="https://github.com/Dgrabovets/S.T.E.W.A.R.D"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/S.T.E.W.A.R.D-dark.svg"><img src="assets/cards/S.T.E.W.A.R.D-light.svg" alt="S.T.E.W.A.R.D" width="100%"></picture></a></td></tr>
-<tr><td width="50%"><a href="https://github.com/Dgrabovets/S.T.E.W.A.R.D.Purser"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/S.T.E.W.A.R.D.Purser-dark.svg"><img src="assets/cards/S.T.E.W.A.R.D.Purser-light.svg" alt="S.T.E.W.A.R.D.Purser" width="100%"></picture></a></td><td width="50%"><a href="https://github.com/Dgrabovets/Ekpiroza"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/Ekpiroza-dark.svg"><img src="assets/cards/Ekpiroza-light.svg" alt="Ekpiroza" width="100%"></picture></a></td></tr>
-<tr><td width="50%"><a href="https://github.com/Dgrabovets/InventoryApp"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/InventoryApp-dark.svg"><img src="assets/cards/InventoryApp-light.svg" alt="InventoryApp" width="100%"></picture></a></td><td width="50%"></td></tr>
-</table>
+<p align="center">
+<a href="https://github.com/Dgrabovets/UnifiedBand"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/UnifiedBand-dark.svg"><img src="assets/cards/UnifiedBand-light.svg" alt="UnifiedBand: Claude Code plugin: a band above the prompt, Ponytail and a model router built in, and a local usage Board" width="400"></picture></a>
+<a href="https://github.com/Dgrabovets/SipAndTell"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/SipAndTell-dark.svg"><img src="assets/cards/SipAndTell-light.svg" alt="SipAndTell: Tea diary for friends, a Telegram Mini App. An experiment: I am the client; Claude writes the code" width="400"></picture></a>
+<a href="https://github.com/Dgrabovets/S.T.E.W.A.R.D"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/S.T.E.W.A.R.D-dark.svg"><img src="assets/cards/S.T.E.W.A.R.D-light.svg" alt="S.T.E.W.A.R.D: Personal utilities that create tasks in SingularityApp, and a Windows tray app that runs them" width="400"></picture></a>
+<a href="https://github.com/Dgrabovets/S.T.E.W.A.R.D.Purser"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/S.T.E.W.A.R.D.Purser-dark.svg"><img src="assets/cards/S.T.E.W.A.R.D.Purser-light.svg" alt="S.T.E.W.A.R.D.Purser: Python core for trading USDT perpetuals on Bybit. It computes the signal and position size; I make the call" width="400"></picture></a>
+<a href="https://github.com/Dgrabovets/Ekpiroza"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/Ekpiroza-dark.svg"><img src="assets/cards/Ekpiroza-light.svg" alt="Ekpiroza: Unity project for my master&#x27;s individual game, at an early setup stage" width="400"></picture></a>
+<a href="https://github.com/Dgrabovets/InventoryApp"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/InventoryApp-dark.svg"><img src="assets/cards/InventoryApp-light.svg" alt="InventoryApp: Home inventory app built with .NET MAUI and SQLite" width="400"></picture></a>
+</p>
 
-## Finished
+## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/finished-dark.svg"><img src="assets/headings/finished-light.svg" alt="Finished"></picture>
 
-<table>
-<tr><td width="50%"><a href="https://github.com/Dgrabovets/BottleGameAPI"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/BottleGameAPI-dark.svg"><img src="assets/cards/BottleGameAPI-light.svg" alt="BottleGameAPI" width="100%"></picture></a></td><td width="50%"><a href="https://github.com/Dgrabovets/BottleGameAdministrationPanel"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/BottleGameAdministrationPanel-dark.svg"><img src="assets/cards/BottleGameAdministrationPanel-light.svg" alt="BottleGameAdministrationPanel" width="100%"></picture></a></td></tr>
-</table>
+<p align="center">
+<a href="https://github.com/Dgrabovets/BottleGameAPI"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/BottleGameAPI-dark.svg"><img src="assets/cards/BottleGameAPI-light.svg" alt="BottleGameAPI: ASP.NET Core and PostgreSQL backend for a Telegram mini-app game, with a demo mode" width="400"></picture></a>
+<a href="https://github.com/Dgrabovets/BottleGameAdministrationPanel"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/BottleGameAdministrationPanel-dark.svg"><img src="assets/cards/BottleGameAdministrationPanel-light.svg" alt="BottleGameAdministrationPanel: Admin panel for BottleGameAPI, built with Next.js and TypeScript" width="400"></picture></a>
+</p>
 
-## Stats
+## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/stats-dark.svg"><img src="assets/headings/stats-light.svg" alt="Stats"></picture>
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg"><img src="assets/stats-light.svg" alt="GitHub statistics" width="100%"></picture>
 

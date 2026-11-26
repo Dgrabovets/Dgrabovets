@@ -63,6 +63,15 @@ def assets_dir() -> Path:
     return ROOT_DIR / _read("PROFILE_ASSETS_DIR", "assets")
 
 
+def fonts_dir() -> Path:
+    """Читает папку шрифтов бренда для `extract_glyphs.py`
+
+    Returns:
+        Путь к папке с файлами шрифтов
+    """
+    return ROOT_DIR / _read("PROFILE_FONTS_DIR", "fonts")
+
+
 def heatmap_weeks() -> int:
     """Читает число недель в графике активности
 
