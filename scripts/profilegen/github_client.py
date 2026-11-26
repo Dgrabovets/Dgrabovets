@@ -66,8 +66,7 @@ class GithubClient:
         """
         collection = self._graphql(CONTRIBUTIONS_QUERY,
                                    {"login": self._user})["data"]["user"]["contributionsCollection"]
-        return ProfileStats(stars=sum(repo["stargazers_count"] for repo in repos.values()),
-                            commits=collection["totalCommitContributions"],
+        return ProfileStats(commits=collection["totalCommitContributions"],
                             pull_requests=collection["totalPullRequestContributions"],
                             languages=self._fetch_languages(repos),
                             weeks=[[day["contributionCount"] for day in week["contributionDays"]]

@@ -1,7 +1,9 @@
 """Собирает SVG и README профиля из projects.json и данных GitHub"""
 
 import json
+import re
 import sys
+from html import escape
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -9,85 +11,93 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from profilegen import settings
 from profilegen.github_client import GithubClient
 from profilegen.project import Project
-from profilegen.svg_render import render_banner, render_card, render_stats
+from profilegen.svg_render import render_badge, render_banner, render_card, render_heading, render_stats
 from profilegen.theme import THEMES
 
 # Секции списка проектов, имена совпадают с метками в README.template.md
 SECTIONS = ("current", "finished")
 
-# Сколько карточек в строке сетки
-CARDS_PER_ROW = 2
+# Значки стека: имя файла и подпись
+STACK = (("csharp", "C#"), ("dotnet", ".NET"), ("aspnet-core", "ASP.NET Core"),
+         ("postgresql", "PostgreSQL"), ("typescript", "TypeScript"), ("python", "Python"))
 
-# Ячейка сетки: ширина делится поровну между карточками строки
-CELL_OPEN = '<td width="50%">'
+# Заголовок раздела в шаблоне: одно слово, оно же имя файла картинки
+HEADING_PATTERN = re.compile(r"^## (\w+)$", re.MULTILINE)
+
+# Ширина карточки в пикселях: на широком экране две в строке, на телефоне одна во всю ширину и текст читается
+CARD_DISPLAY_WIDTH = "400"
+
+# Ширина шапки и статистики: вся страница
+FULL_WIDTH = "100%"
 
 # Альтернативные тексты картинок README
-BANNER_ALT = "Aeternus, backend developer, C# and .NET"
+BANNER_ALT = ("Aeternus. Backend developer, C# / .NET. "
+              "APIs, high-load services, integrations. Backend systems made to keep running.")
 STATS_ALT = "GitHub statistics"
 
 
 # region Building
-def _picture(path: str, alt: str) -> str:
+def _picture(path: str, alt: str, width: str = "") -> str:
     """Собирает тег `picture` со светлой и тёмной версией картинки
 
     Args:
         path: Путь без суффикса темы и расширения, например `assets/banner`
         alt: Альтернативный текст
+        width: Ширина картинки, пусто для родного размера
 
     Returns:
         HTML-фрагмент
     """
+    width_attribute = f' width="{width}"' if width else ""
+
     return (f'<picture><source media="(prefers-color-scheme: dark)" srcset="{path}-dark.svg">'
-            f'<img src="{path}-light.svg" alt="{alt}" width="100%"></picture>')
+            f'<img src="{path}-light.svg" alt="{escape(alt)}"{width_attribute}></picture>')
 
 
 def _section_html(projects: list[Project]) -> str:
-    """Собирает сетку карточек секции
+    """Собирает карточки секции без таблицы: её рамки GitHub спорят с рамками карточек
 
     Args:
         projects: Проекты секции
 
     Returns:
-        HTML-таблица со ссылками на репозитории
+        Абзац с карточками-ссылками
     """
-    cells = [f'{CELL_OPEN}<a href="https://github.com/{settings.user()}/{project.repo}">'
-             f'{_picture(f"assets/cards/{project.repo}", project.repo)}</a></td>'
-             for project in projects]
+    cards = "\n".join(f'<a href="https://github.com/{settings.user()}/{project.repo}">'
+                      f'{_picture(f"assets/cards/{project.repo}", f"{project.repo}: {project.description}", CARD_DISPLAY_WIDTH)}</a>'
+                      for project in projects)
 
-    while len(cells) % CARDS_PER_ROW:
-        cells.append(f"{CELL_OPEN}</td>")
-
-    return "<table>\n" + "\n".join("<tr>" + "".join(cells[index:index + CARDS_PER_ROW]) + "</tr>"
-                                   for index in range(0, len(cells), CARDS_PER_ROW)) + "\n</table>"
+    return f'<p align="center">\n{cards}\n</p>'
 
 
 def _load_projects(repos: dict[str, dict]) -> list[Project]:
-    """Читает projects.json и дополняет язык и звёзды из GitHub
+    """Читает projects.json и дополняет язык из GitHub
 
     Args:
         repos: Публичные репозитории
 
     Returns:
-        Проекты в порядке файла
+        Проекты в порядке файла, поле `label` из файла берётся, только если GitHub не нашёл язык
 
     Raises:
         KeyError: Если репозиторий из файла не найден среди публичных
     """
     return [Project(repo=entry["repo"],
                     section=entry["section"],
-                    description=entry["description"],
-                    language=repos[entry["repo"]]["language"] or "",
-                    stars=repos[entry["repo"]]["stargazers_count"])
+                    # Пустая строка в описании разорвала бы HTML-блок README
+                    description=" ".join(entry["description"].split()),
+                    label=repos[entry["repo"]]["language"] or entry.get("label", ""))
             for entry in json.loads((settings.ROOT_DIR / "projects.json").read_text(encoding="utf-8"))]
 
 
 def _write(path: Path, text: str) -> None:
-    """Пишет файл в UTF-8 с переводами строк LF
+    """Пишет файл в UTF-8 с переводами строк LF, создавая папку
 
     Args:
         path: Путь к файлу
         text: Содержимое
     """
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8", newline="\n")
 # endregion Building
 
@@ -99,18 +109,26 @@ def main() -> None:
     projects = _load_projects(repos)
     stats = client.fetch_stats(repos, settings.heatmap_weeks())
     assets = settings.assets_dir()
-    (assets / "cards").mkdir(parents=True, exist_ok=True)
+    readme = (settings.ROOT_DIR / "README.template.md").read_text(encoding="utf-8")
+    headings = HEADING_PATTERN.findall(readme)
 
     for theme in THEMES:
-        _write(assets / f"banner-{theme.name}.svg", render_banner(theme))
+        _write(assets / f"banner-{theme.name}.svg", render_banner())
         _write(assets / f"stats-{theme.name}.svg", render_stats(stats, theme))
+
+        for title in headings:
+            _write(assets / "headings" / f"{title.lower()}-{theme.name}.svg", render_heading(title, theme))
+
+        for slug, label in STACK:
+            _write(assets / "badges" / f"{slug}-{theme.name}.svg", render_badge(label, theme))
 
         for project in projects:
             _write(assets / "cards" / f"{project.repo}-{theme.name}.svg", render_card(project, theme))
 
-    readme = (settings.ROOT_DIR / "README.template.md").read_text(encoding="utf-8")
-    readme = readme.replace("{{banner}}", _picture("assets/banner", BANNER_ALT))
-    readme = readme.replace("{{stats}}", _picture("assets/stats", STATS_ALT))
+    readme = HEADING_PATTERN.sub(lambda match: f"## {_picture(f'assets/headings/{match[1].lower()}', match[1])}", readme)
+    readme = readme.replace("{{banner}}", _picture("assets/banner", BANNER_ALT, FULL_WIDTH))
+    readme = readme.replace("{{stack}}", "\n".join(_picture(f"assets/badges/{slug}", label) for slug, label in STACK))
+    readme = readme.replace("{{stats}}", _picture("assets/stats", STATS_ALT, FULL_WIDTH))
 
     for section in SECTIONS:
         readme = readme.replace("{{" + section + "}}",
