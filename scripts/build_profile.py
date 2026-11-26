@@ -18,8 +18,10 @@ from profilegen.theme import THEMES
 SECTIONS = ("current", "finished")
 
 # Значки стека: имя файла и подпись
-STACK = (("csharp", "C#"), ("dotnet", ".NET"), ("aspnet-core", "ASP.NET Core"),
-         ("postgresql", "PostgreSQL"), ("typescript", "TypeScript"), ("python", "Python"))
+STACK = (("csharp", "C#"), ("dotnet", ".NET"), ("aspnet-core", "ASP.NET Core"), ("ef-core", "Entity Framework Core"),
+         ("sql-server", "SQL Server"), ("postgresql", "PostgreSQL"), ("kafka", "Kafka"), ("rabbitmq", "RabbitMQ"),
+         ("docker", "Docker"), ("ci-cd", "CI/CD"), ("automated-tests", "Automated tests"),
+         ("typescript", "TypeScript"), ("python", "Python"))
 
 # Заголовок раздела в шаблоне: одно слово, оно же имя файла картинки
 HEADING_PATTERN = re.compile(r"^## (\w+)$", re.MULTILINE)
