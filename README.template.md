@@ -2,11 +2,16 @@
 
 ## About
 
-Backend developer (C# / .NET) at ChiTech, based in Novi Sad, Serbia. Focus: APIs, high-load services and integrations.
+**At work, ChiTech**
 
-- Bachelor's degree with honours in Applied Informatics, RANEPA (Moscow)
-- Master's student at RANEPA (Applied Informatics, game design)
-- Interests: gongfu tea, hiking and trekking, learning Serbian
+- Delivery integrations, including Yandex: shipment registration, status exchange, shipping documents
+- Marketplace integrations: Kuper, Ozon, Wildberries, T-Shop
+- Order picking and handover for marketplace orders in the company's stores
+- A VAT rate change across 10+ systems, delivered on time with my team
+
+I'm based in Novi Sad and open to relocation. I studied applied informatics at RANEPA (honours). Master's student in game design at RANEPA. 
+
+Away from code: travelling (30+ countries so far), hiking and trekking, weightlifting.
 
 ## Stack
 
