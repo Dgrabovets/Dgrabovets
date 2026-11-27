@@ -103,7 +103,7 @@ class LoadProjectsTests(unittest.TestCase):
         Returns:
             Запись
         """
-        return {"repo": repo, "section": "current", "description": "Text", **extra}
+        return {"repo": repo, "section": "current", "description": "Text", "kind": "tool", **extra}
 
     def _load(self, entries: list[dict[str, str]], repos: dict[str, dict]) -> list[Project]:
         """Читает проекты из временного projects.json

@@ -4,6 +4,7 @@ import textwrap
 from pathlib import Path
 from xml.sax.saxutils import escape
 
+from .card_motion import render_motion
 from .font_enum import FontEnum
 from .glyph_text import printable, text_path, text_width
 from .profile_stats import ProfileStats
@@ -26,7 +27,7 @@ CARD_WIDTH = 340
 CARD_HEIGHT = 148
 
 # Сколько символов описания помещается в строку карточки при `CARD_DESCRIPTION_SIZE`
-DESCRIPTION_LINE_CHARS = 44
+DESCRIPTION_LINE_CHARS = 39
 
 # Сколько строк описания показывается, остальное заменяется многоточием
 DESCRIPTION_LINES = 3
@@ -54,9 +55,9 @@ CARD_LINE_HEIGHT = 19
 CARD_LABEL_Y = 132
 
 # Размеры шрифтов карточки: название, описание, подпись языка
-CARD_TITLE_SIZE = 15
-CARD_DESCRIPTION_SIZE = 13
-CARD_LABEL_SIZE = 12
+CARD_TITLE_SIZE = 17
+CARD_DESCRIPTION_SIZE = 14.5
+CARD_LABEL_SIZE = 13
 
 # Акцентная черта слева от названия, как на карточках баннера бренда
 CARD_MARK_X = 1.5
@@ -81,7 +82,7 @@ ACCENT_RADIUS = 2
 BADGE_HEIGHT = 28
 BADGE_TEXT_X = 22
 BADGE_PADDING = 12
-BADGE_FONT_SIZE = 12
+BADGE_FONT_SIZE = 13
 BADGE_TEXT_Y = 18
 
 # Вертикальная акцентная черта значка
@@ -225,7 +226,7 @@ def _language_caption(language: str, percent: float) -> str:
     Returns:
         Название и доля
     """
-    return f"{printable(language, FontEnum.SANS_REGULAR)} {_share(percent)}"
+    return f"{printable(language, FontEnum.SANS_MEDIUM)} {_share(percent)}"
 # endregion Helpers
 
 
@@ -282,26 +283,34 @@ def render_badge(label: str, theme: Theme) -> str:
                 + text_path(label, BADGE_TEXT_X, BADGE_TEXT_Y, FontEnum.MONO_MEDIUM, BADGE_FONT_SIZE, theme.foreground))
 
 
-def render_card(project: Project, theme: Theme) -> str:
-    """Рисует карточку проекта
+def render_card(project: Project,
+                theme: Theme,
+                delay: float = 0.0) -> str:
+    """Рисует карточку проекта с анимацией его вида
 
     Args:
         project: Проект
         theme: Тема оформления
+        delay: Сдвиг начала анимации в секундах
 
     Returns:
         Текст SVG
     """
     lines = "".join(text_path(line, CARD_PADDING, CARD_DESCRIPTION_Y + index * CARD_LINE_HEIGHT,
-                              FontEnum.SANS_REGULAR, CARD_DESCRIPTION_SIZE, theme.muted)
+                              FontEnum.SANS_MEDIUM, CARD_DESCRIPTION_SIZE, theme.muted)
                     for index, line in enumerate(wrap_description(project.description)))
     label = printable(project.label, FontEnum.MONO_MEDIUM)
     footer = (text_path(label, CARD_PADDING, CARD_LABEL_Y, FontEnum.MONO_MEDIUM, CARD_LABEL_SIZE, theme.accent)
               if label
               else "")
 
+    # Анимация идёт сразу после фона: длинные строки доходят до правого края, и текст должен лежать сверху
+    motion = render_motion(project.kind, theme, delay, (CARD_WIDTH, CARD_HEIGHT, CARD_RADIUS),
+                           (CARD_PADDING + text_width(label, FontEnum.MONO_MEDIUM, CARD_LABEL_SIZE), CARD_LABEL_Y))
+
     return _svg(CARD_WIDTH, CARD_HEIGHT, f"{project.repo}: {project.description}",
                 _box(0, 0, CARD_WIDTH, CARD_HEIGHT, CARD_RADIUS, theme.card, theme.border)
+                + motion
                 + f'<rect x="{CARD_MARK_X}" y="{CARD_MARK_Y}" width="{CARD_MARK_WIDTH}" height="{CARD_MARK_HEIGHT}" fill="{theme.accent}"/>'
                 + text_path(project.repo, CARD_PADDING, CARD_TITLE_Y, FontEnum.MONO_BOLD, CARD_TITLE_SIZE, theme.foreground)
                 + lines
@@ -327,7 +336,7 @@ def render_stats(stats: ProfileStats, theme: Theme) -> str:
         x = STATS_PADDING + index * (tile_width + TILE_GAP)
         tiles += (_box(x, TILE_Y, tile_width, TILE_HEIGHT, CARD_RADIUS, theme.card, theme.border)
                   + text_path(str(value), x + TILE_PADDING, TILE_Y + TILE_VALUE_Y, FontEnum.MONO_BOLD, TILE_VALUE_SIZE, theme.accent)
-                  + text_path(caption, x + TILE_PADDING, TILE_Y + TILE_CAPTION_Y, FontEnum.SANS_REGULAR, STATS_FONT_SIZE, theme.muted))
+                  + text_path(caption, x + TILE_PADDING, TILE_Y + TILE_CAPTION_Y, FontEnum.SANS_MEDIUM, STATS_FONT_SIZE, theme.muted))
 
     bar = ""
     legend = ""
@@ -341,10 +350,10 @@ def render_stats(stats: ProfileStats, theme: Theme) -> str:
 
         bar += f'<rect x="{STATS_PADDING + offset:.1f}" y="{BAR_Y}" width="{width:.1f}" height="{BAR_HEIGHT}" fill="{color}"/>'
         legend += (f'<circle cx="{legend_x + LEGEND_DOT_RADIUS:.1f}" cy="{LEGEND_Y - LEGEND_DOT_RISE}" r="{LEGEND_DOT_RADIUS}" fill="{color}"/>'
-                   + text_path(caption, round(legend_x + LEGEND_TEXT_X, 1), LEGEND_Y, FontEnum.SANS_REGULAR, STATS_FONT_SIZE, theme.muted))
+                   + text_path(caption, round(legend_x + LEGEND_TEXT_X, 1), LEGEND_Y, FontEnum.SANS_MEDIUM, STATS_FONT_SIZE, theme.muted))
 
         offset += width
-        legend_x += LEGEND_TEXT_X + text_width(caption, FontEnum.SANS_REGULAR, STATS_FONT_SIZE) + LEGEND_GAP
+        legend_x += LEGEND_TEXT_X + text_width(caption, FontEnum.SANS_MEDIUM, STATS_FONT_SIZE) + LEGEND_GAP
 
     cells = ""
 

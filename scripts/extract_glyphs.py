@@ -21,7 +21,7 @@ from profilegen.glyph_text import GLYPHS_PATH
 # Файл шрифта и насыщенность для каждого начертания
 SOURCES = {FontEnum.MONO_MEDIUM: ("JetBrainsMono[wght].ttf", 500),
            FontEnum.MONO_BOLD: ("JetBrainsMono[wght].ttf", 700),
-           FontEnum.SANS_REGULAR: ("IBMPlexSans[wdth,wght].ttf", 400)}
+           FontEnum.SANS_MEDIUM: ("IBMPlexSans[wdth,wght].ttf", 500)}
 
 # Печатные ASCII и Latin-1, многоточие и типографский апостроф: этого хватает английским текстам профиля
 CHARACTERS = "".join(map(chr, [*range(32, 127), *range(160, 256)])) + "…’"

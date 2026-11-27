@@ -12,6 +12,7 @@ from profilegen.font_enum import FontEnum
 from profilegen.glyph_text import text_path, text_width
 from profilegen.profile_stats import ProfileStats
 from profilegen.project import Project
+from profilegen.project_kind_enum import ProjectKindEnum
 from profilegen.svg_render import (CARD_DESCRIPTION_SIZE, CARD_PADDING, CARD_WIDTH, DESCRIPTION_LINES, heat_level, render_badge,
                                    render_banner, render_card, render_heading, render_stats, wrap_description)
 from profilegen.theme import DARK, LIGHT, THEMES
@@ -35,7 +36,7 @@ class SvgRenderTests(unittest.TestCase):
         for entry in json.loads(PROJECTS_PATH.read_text(encoding="utf-8")):
             for line in wrap_description(entry["description"]):
                 self.assertFalse(line.endswith("…"), entry["repo"])
-                self.assertLessEqual(text_width(line, FontEnum.SANS_REGULAR, CARD_DESCRIPTION_SIZE), CARD_WIDTH - 2 * CARD_PADDING, line)
+                self.assertLessEqual(text_width(line, FontEnum.SANS_MEDIUM, CARD_DESCRIPTION_SIZE), CARD_WIDTH - 2 * CARD_PADDING, line)
 
     def test_heat_levels(self) -> None:
         """Границы уровней графика: 0 пусто, 1 до 1, 2 до 4, 3 до 8, дальше 4"""
@@ -50,7 +51,7 @@ class SvgRenderTests(unittest.TestCase):
     def test_unknown_symbol_is_reported(self) -> None:
         """Символ вне таблицы контуров роняет сборку, а не пропадает молча"""
         with self.assertRaises(ValueError):
-            text_path("Ж", 0, 0, FontEnum.SANS_REGULAR, 13, "#fff")
+            text_path("Ж", 0, 0, FontEnum.SANS_MEDIUM, 13, "#fff")
 
     def test_all_svg_are_valid_xml_and_escape_text(self) -> None:
         """Спецсимволы в описании не ломают XML, все SVG разбираются парсером и не содержат живого текста"""
@@ -75,6 +76,20 @@ class SvgRenderTests(unittest.TestCase):
 
         for text in (render_heading("Current", DARK), render_badge("C#", DARK), render_card(project, DARK), render_stats(stats, DARK)):
             self.assertNotIn("flow", text)
+
+    def test_each_project_kind_has_its_own_animation(self) -> None:
+        """У каждого вида своя анимация под текстом, она отключается настройкой движения и разбирается парсером"""
+        classes = ('class="column"', 'class="glare"', 'class="cursor"', 'class="breath"')
+
+        for theme in THEMES:
+            cards = [render_card(Project(repo="A", section="current", description="B", label="C#", kind=kind), theme, 1.7)
+                     for kind in (ProjectKindEnum.BACKEND, ProjectKindEnum.APP, ProjectKindEnum.TOOL, ProjectKindEnum.EARLY)]
+
+            for expected, card in zip(classes, cards):
+                ElementTree.fromstring(card)
+                self.assertEqual([name for name in classes if name in card], [expected])
+                self.assertIn("prefers-reduced-motion", card)
+                self.assertLess(card.index(expected), card.index("<g transform"))
 
     def test_light_files_use_light_colors(self) -> None:
         """Светлые картинки рисуются своей палитрой: фон шапки и значка не остаётся тёмным"""
