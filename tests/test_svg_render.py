@@ -8,13 +8,15 @@ from xml.etree import ElementTree
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
+from build_profile import LEGEND
 from profilegen.font_enum import FontEnum
 from profilegen.glyph_text import text_path, text_width
 from profilegen.profile_stats import ProfileStats
 from profilegen.project import Project
 from profilegen.project_kind_enum import ProjectKindEnum
-from profilegen.svg_render import (CARD_DESCRIPTION_SIZE, CARD_PADDING, CARD_WIDTH, DESCRIPTION_LINES, heat_level, render_badge,
-                                   render_banner, render_card, render_heading, render_stats, wrap_description)
+from profilegen.svg_render import (CARD_DESCRIPTION_SIZE, CARD_PADDING, CARD_TITLE_SIZE, CARD_TITLE_X, CARD_WIDTH, DESCRIPTION_LINES,
+                                   HEAT_SIDES, LEGEND_NAME_SIZE, LEGEND_PADDING, LEGEND_WIDTH, heat_level, render_badge, render_banner,
+                                   render_card, render_heading, render_legend, render_stats, wrap_description)
 from profilegen.theme import DARK, LIGHT, THEMES
 
 # Список проектов профиля, по нему проверяется, что тексты помещаются в карточки
@@ -41,6 +43,19 @@ class SvgRenderTests(unittest.TestCase):
     def test_heat_levels(self) -> None:
         """Границы уровней графика: 0 пусто, 1 до 1, 2 до 4, 3 до 8, дальше 4"""
         self.assertEqual([heat_level(count) for count in (0, 1, 2, 4, 5, 8, 9)], [0, 1, 2, 2, 3, 3, 4])
+
+    def test_activity_levels_differ_in_size_and_color(self) -> None:
+        """Пустой день и четыре уровня активности различаются и размером, и цветом"""
+        stats = ProfileStats(commits=0, pull_requests=0, languages=[], weeks=[[0, 1, 4, 8, 9]])
+
+        for theme in THEMES:
+            svg = render_stats(stats, theme)
+
+            self.assertEqual(sorted(set(HEAT_SIDES)), list(HEAT_SIDES))
+            self.assertEqual(len(set(theme.heat_colors)), len(HEAT_SIDES))
+
+            for side, color in zip(HEAT_SIDES, theme.heat_colors):
+                self.assertRegex(svg, rf'width="{side}" height="{side}" rx="\d+" fill="{color}"')
 
     def test_tiny_language_share_is_not_zero(self) -> None:
         """Доля 0.3 процента пишется как меньше одного, а не как ноль"""
@@ -90,6 +105,23 @@ class SvgRenderTests(unittest.TestCase):
                 self.assertEqual([name for name in classes if name in card], [expected])
                 self.assertIn("prefers-reduced-motion", card)
                 self.assertLess(card.index(expected), card.index("<g transform"))
+
+    def test_names_fit_cards(self) -> None:
+        """Название из projects.json после метки не выходит за правое поле карточки"""
+        for entry in json.loads(PROJECTS_PATH.read_text(encoding="utf-8")):
+            self.assertLessEqual(CARD_TITLE_X + text_width(entry["repo"], FontEnum.MONO_BOLD, CARD_TITLE_SIZE), CARD_WIDTH - 4, entry["repo"])
+
+    def test_legend_shows_the_animation_of_its_kind(self) -> None:
+        """Плитка легенды двигается так же, как карточки этого вида, и помещает подписи"""
+        classes = ('class="column"', 'class="glare"', 'class="cursor"', 'class="breath"')
+
+        for theme in THEMES:
+            for entry, expected in zip(LEGEND, classes):
+                tile = render_legend(entry.kind, entry.title, entry.name, theme)
+
+                ElementTree.fromstring(tile)
+                self.assertEqual([name for name in classes if name in tile], [expected])
+                self.assertLessEqual(LEGEND_PADDING + text_width(entry.name, FontEnum.MONO_MEDIUM, LEGEND_NAME_SIZE), LEGEND_WIDTH - 40)
 
     def test_light_files_use_light_colors(self) -> None:
         """Светлые картинки рисуются своей палитрой: фон шапки и значка не остаётся тёмным"""

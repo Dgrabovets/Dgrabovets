@@ -6,9 +6,11 @@ from .theme import Theme
 # Анимация выключается, если в системе просят меньше движения: без неё блик и рамка не видны, колонки и курсор стоят
 STILL = "@media (prefers-reduced-motion:reduce){*{animation:none!important}}"
 
-# Колонки света у правого края (сервисы): левый край, шаг, число, длительность и задержка между соседними.
-# Левый край правее самой длинной строки описания: колонки не должны идти под текстом
-COLUMN_X = 309
+# Колонки света у правого края (сервисы): отступ первой от правого края, шаг, число, длительность и задержка между соседними.
+# Отступ такой, чтобы колонки стояли правее самой длинной строки описания и не шли под текстом
+COLUMN_RIGHT_GAP = 31
+# Высота, под которую заданы колонки: в более низкой плитке они сжимаются по вертикали
+COLUMN_DESIGN_HEIGHT = 148
 COLUMN_STEP = 3.8
 COLUMN_COUNT = 8
 COLUMN_SECONDS = 5
@@ -61,22 +63,30 @@ def _style(rules: str) -> str:
     return f"<style>{rules}{STILL}</style>"
 
 
-def _columns(theme: Theme, delay: float) -> str:
+def _columns(theme: Theme,
+             delay: float,
+             width: int,
+             height: int) -> str:
     """Рисует колонки света, которые медленно разгораются
 
     Args:
         theme: Тема оформления
         delay: Сдвиг начала в секундах
+        width: Ширина картинки
+        height: Высота картинки
 
     Returns:
         Элементы SVG
     """
-    bars = "".join(f'<rect class="column" x="{COLUMN_X + index * COLUMN_STEP:g}" '
+    bars = "".join(f'<rect class="column" x="{width - COLUMN_RIGHT_GAP + index * COLUMN_STEP:g}" '
                    f'y="{COLUMN_TOP + index * COLUMN_TOP_STEP % COLUMN_TOP_SPREAD}" '
                    f'width="{COLUMN_THIN if index % COLUMN_WIDE_EVERY else COLUMN_WIDE}" '
                    f'height="{COLUMN_HEIGHT + index * COLUMN_HEIGHT_STEP % COLUMN_HEIGHT_SPREAD}" fill="url(#fade)" '
                    f'style="animation-delay:{-(delay + index * COLUMN_LAG):g}s"/>'
                    for index in range(COLUMN_COUNT))
+
+    if height < COLUMN_DESIGN_HEIGHT:
+        bars = f'<svg viewBox="0 0 {width} {COLUMN_DESIGN_HEIGHT}" width="{width}" height="{height}" preserveAspectRatio="none">{bars}</svg>'
 
     return (_style(f".column{{opacity:.15;animation:glow {COLUMN_SECONDS}s ease-in-out infinite}}@keyframes glow{{50%{{opacity:.8}}}}")
             + f'<linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{theme.columns}" stop-opacity="0"/>'
@@ -173,7 +183,7 @@ def render_motion(kind: ProjectKindEnum,
         Элементы SVG
     """
     if kind is ProjectKindEnum.BACKEND:
-        return _columns(theme, delay)
+        return _columns(theme, delay, *size[:2])
 
     if kind is ProjectKindEnum.APP:
         return _glare(theme, delay, *size)

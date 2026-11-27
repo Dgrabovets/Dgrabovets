@@ -10,9 +10,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from profilegen import settings
 from profilegen.github_client import GithubClient
+from profilegen.legend_entry import LegendEntry
 from profilegen.project import Project
 from profilegen.project_kind_enum import ProjectKindEnum
-from profilegen.svg_render import render_badge, render_banner, render_card, render_heading, render_stats
+from profilegen.svg_render import render_badge, render_banner, render_card, render_heading, render_legend, render_stats
 from profilegen.theme import THEMES
 
 # Секции списка проектов, имена совпадают с метками в README.template.md
@@ -24,9 +25,18 @@ STACK = (("csharp", "C#"), ("dotnet", ".NET"), ("aspnet-core", "ASP.NET Core"), 
          ("docker", "Docker"), ("ci-cd", "CI/CD"), ("automated-tests", "Automated tests"),
          ("typescript", "TypeScript"), ("python", "Python"))
 
-# Заголовок раздела в шаблоне: одно слово, оно же имя файла картинки. Уровень третий, потому что под вторым GitHub рисует черту,
+# Заголовок раздела в шаблоне: слова через пробел, из них же имя файла картинки. Уровень третий, потому что под вторым GitHub рисует черту,
 # а черта нужна над названием: её даёт пустой `<h2></h2>` перед заголовком
-HEADING_PATTERN = re.compile(r"^### (\w+)$", re.MULTILINE)
+HEADING_PATTERN = re.compile(r"^### (\w+(?: \w+)*)$", re.MULTILINE)
+
+# Легенда анимаций карточек по видам проектов
+LEGEND = (LegendEntry(ProjectKindEnum.BACKEND, "Backend", "light columns", "data flowing through a service"),
+          LegendEntry(ProjectKindEnum.APP, "App", "soft glare", "light passing over a screen"),
+          LegendEntry(ProjectKindEnum.TOOL, "Tool", "terminal cursor", "waiting for your command"),
+          LegendEntry(ProjectKindEnum.EARLY, "Early stage", "glowing border", "still taking shape"))
+
+# Ширина плитки легенды в пикселях: четыре в строке на широком экране, на телефоне переносятся
+LEGEND_DISPLAY_WIDTH = "200"
 
 # Ширина карточки в пикселях: на широком экране две в строке, на телефоне одна во всю ширину и текст читается
 CARD_DISPLAY_WIDTH = "400"
@@ -75,6 +85,30 @@ def _section_html(projects: list[Project]) -> str:
                       for project in projects)
 
     return f'<p align="center">\n{cards}\n</p>'
+
+
+def _slug(title: str) -> str:
+    """Переводит название раздела в имя файла
+
+    Args:
+        title: Название раздела
+
+    Returns:
+        Строчные буквы с дефисами
+    """
+    return title.lower().replace(" ", "-")
+
+
+def _legend_html() -> str:
+    """Собирает ряд плиток легенды
+
+    Returns:
+        Абзац с картинками, смысл анимации в альтернативном тексте
+    """
+    tiles = "\n".join(_picture(f"assets/legend/{entry.kind.value}", f"{entry.title}: {entry.name}, {entry.meaning}", LEGEND_DISPLAY_WIDTH)
+                      for entry in LEGEND)
+
+    return f'<p align="center">\n{tiles}\n</p>'
 
 
 def _load_projects(repos: dict[str, dict]) -> list[Project]:
@@ -126,7 +160,10 @@ def main() -> None:
         _write(assets / f"stats-{theme.name}.svg", render_stats(stats, theme))
 
         for title in headings:
-            _write(assets / "headings" / f"{title.lower()}-{theme.name}.svg", render_heading(title, theme))
+            _write(assets / "headings" / f"{_slug(title)}-{theme.name}.svg", render_heading(title, theme))
+
+        for entry in LEGEND:
+            _write(assets / "legend" / f"{entry.kind.value}-{theme.name}.svg", render_legend(entry.kind, entry.title, entry.name, theme))
 
         for slug, label in STACK:
             _write(assets / "badges" / f"{slug}-{theme.name}.svg", render_badge(label, theme))
@@ -134,7 +171,8 @@ def main() -> None:
         for index, project in enumerate(projects):
             _write(assets / "cards" / f"{project.repo}-{theme.name}.svg", render_card(project, theme, index * MOTION_STAGGER))
 
-    readme = HEADING_PATTERN.sub(lambda match: f"### {_picture(f'assets/headings/{match[1].lower()}', match[1])}", readme)
+    readme = HEADING_PATTERN.sub(lambda match: f"### {_picture(f'assets/headings/{_slug(match[1])}', match[1])}", readme)
+    readme = readme.replace("{{legend}}", _legend_html())
     readme = readme.replace("{{banner}}", _picture("assets/banner", BANNER_ALT, FULL_WIDTH))
     readme = readme.replace("{{stack}}", "\n".join(_picture(f"assets/badges/{slug}", label) for slug, label in STACK))
     readme = readme.replace("{{stats}}", _picture("assets/stats", STATS_ALT, FULL_WIDTH))

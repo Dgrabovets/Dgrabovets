@@ -9,6 +9,7 @@ from .font_enum import FontEnum
 from .glyph_text import printable, text_path, text_width
 from .profile_stats import ProfileStats
 from .project import Project
+from .project_kind_enum import ProjectKindEnum
 from .theme import Theme
 
 # Готовые шапки бренда с текстом в контурах и анимированной петлёй, копии `assets/header-<тема>.svg` из папки темы бренда
@@ -41,14 +42,24 @@ HEAT_CELL = 16
 HEAT_GAP = 3
 HEAT_RADIUS = 3
 
-# Прозрачность клеток графика на уровнях 0..4, от пустой до самой активной
-HEAT_ALPHAS = (0.6, 0.3, 0.55, 0.8, 1.0)
+# Сторона квадрата на уровнях 0..4: активность видна по размеру и без различения цветов, пустой день это точка
+HEAT_SIDES = (5, 8, 11, 14, 16)
+
+# Подсказка «Less … More» под графиком: подписи, отступ от нижнего края, шаг квадратов, зазор до подписей и базовая линия текста
+SCALE_LESS = "Less"
+SCALE_MORE = "More"
+SCALE_RISE = 26
+SCALE_STEP = 20
+SCALE_GAP = 8
+SCALE_TEXT_Y = 13
 
 # Верхние границы числа вкладов за день для уровней 1..3, всё выше это уровень 4
 HEAT_LEVEL_LIMITS = (1, 4, 8)
 
 # Поля и базовые линии карточки проекта в пикселях
 CARD_PADDING = 20
+# Название стоит правее квадратной метки
+CARD_TITLE_X = 36
 CARD_TITLE_Y = 34
 CARD_DESCRIPTION_Y = 62
 CARD_LINE_HEIGHT = 19
@@ -59,11 +70,23 @@ CARD_TITLE_SIZE = 17
 CARD_DESCRIPTION_SIZE = 14.5
 CARD_LABEL_SIZE = 13
 
-# Акцентная черта слева от названия, как на карточках баннера бренда
-CARD_MARK_X = 1.5
-CARD_MARK_Y = 20
-CARD_MARK_WIDTH = 4
-CARD_MARK_HEIGHT = 18
+# Квадратная метка перед названием проекта
+CARD_MARK_X = 20
+CARD_MARK_Y = 24
+CARD_MARK_SIZE = 8
+
+# Плитка легенды анимаций: размер, поле, базовые линии названия вида и анимации, их размеры
+LEGEND_WIDTH = 207
+LEGEND_HEIGHT = 56
+LEGEND_PADDING = 14
+LEGEND_TITLE_Y = 24
+LEGEND_NAME_Y = 43
+LEGEND_TITLE_SIZE = 14
+LEGEND_NAME_SIZE = 12
+# Где в плитке инструмента мигает курсор: правый край условной подписи и её базовая линия
+LEGEND_CURSOR = (LEGEND_WIDTH - 36, 36)
+# Сдвиг начала анимации в плитке по виду проекта: на снимке без движения видны блик и рамка
+LEGEND_DELAYS = {ProjectKindEnum.BACKEND: 0.4, ProjectKindEnum.APP: 1.0, ProjectKindEnum.TOOL: 0.0, ProjectKindEnum.EARLY: 2.0}
 
 # Заголовок раздела: высота, поле, зазор после акцентной черты и разрядка букв как у подписи в шапке
 HEADING_HEIGHT = 34
@@ -91,9 +114,9 @@ BADGE_MARK_Y = 8
 BADGE_MARK_WIDTH = 4
 BADGE_MARK_HEIGHT = 12
 
-# Размер блока статистики: ширина равна ширине баннера, высота вмещает плитки, полосу языков и 7 рядов графика
+# Размер блока статистики: ширина равна ширине баннера, высота вмещает плитки, полосу языков, 7 рядов графика и подсказку под ним
 STATS_WIDTH = 880
-STATS_HEIGHT = 346
+STATS_HEIGHT = 376
 
 # Раскладка статистики: боковое поле центрирует график из 40 недель, затем плитки с числами
 STATS_PADDING = 62
@@ -227,6 +250,47 @@ def _language_caption(language: str, percent: float) -> str:
         Название и доля
     """
     return f"{printable(language, FontEnum.SANS_MEDIUM)} {_share(percent)}"
+
+
+def _heat_cell(x: float,
+               y: int,
+               level: int,
+               theme: Theme) -> str:
+    """Рисует квадрат активности по центру клетки
+
+    Args:
+        x: Левый край клетки
+        y: Верхний край клетки
+        level: Уровень 0..4
+        theme: Тема оформления
+
+    Returns:
+        Элемент `rect`
+    """
+    side = HEAT_SIDES[level]
+    inset = (HEAT_CELL - side) / 2
+
+    return (f'<rect x="{x + inset:g}" y="{y + inset:g}" width="{side}" height="{side}" rx="{min(HEAT_RADIUS, side // 3)}" '
+            f'fill="{theme.heat_colors[level]}"/>')
+
+
+def _heat_scale(theme: Theme) -> str:
+    """Рисует подсказку «меньше или больше», прижатую к правому краю графика
+
+    Args:
+        theme: Тема оформления
+
+    Returns:
+        Элементы SVG
+    """
+    top = STATS_HEIGHT - SCALE_RISE
+    more_x = round(STATS_WIDTH - STATS_PADDING - text_width(SCALE_MORE, FontEnum.SANS_MEDIUM, STATS_FONT_SIZE), 1)
+    cells_x = round(more_x - SCALE_GAP - (len(HEAT_SIDES) - 1) * SCALE_STEP - HEAT_CELL, 1)
+    less_x = round(cells_x - SCALE_GAP - text_width(SCALE_LESS, FontEnum.SANS_MEDIUM, STATS_FONT_SIZE), 1)
+
+    return (text_path(SCALE_LESS, less_x, top + SCALE_TEXT_Y, FontEnum.SANS_MEDIUM, STATS_FONT_SIZE, theme.muted)
+            + "".join(_heat_cell(cells_x + level * SCALE_STEP, top, level, theme) for level in range(len(HEAT_SIDES)))
+            + text_path(SCALE_MORE, more_x, top + SCALE_TEXT_Y, FontEnum.SANS_MEDIUM, STATS_FONT_SIZE, theme.muted))
 # endregion Helpers
 
 
@@ -261,7 +325,7 @@ def render_heading(title: str, theme: Theme) -> str:
                 _box(0, 0, width, HEADING_HEIGHT, SMALL_RADIUS, theme.background, theme.border)
                 + f'<rect x="{HEADING_PADDING}" y="{(HEADING_HEIGHT - ACCENT_BAR_HEIGHT) // 2}" width="{ACCENT_BAR_WIDTH}" '
                   f'height="{ACCENT_BAR_HEIGHT}" rx="{ACCENT_RADIUS}" fill="{theme.accent}"/>'
-                + text_path(caps, text_x, HEADING_TEXT_Y, FontEnum.MONO_MEDIUM, HEADING_FONT_SIZE, theme.accent, HEADING_SPACING))
+                + text_path(caps, text_x, HEADING_TEXT_Y, FontEnum.MONO_MEDIUM, HEADING_FONT_SIZE, theme.label, HEADING_SPACING))
 
 
 def render_badge(label: str, theme: Theme) -> str:
@@ -300,7 +364,7 @@ def render_card(project: Project,
                               FontEnum.SANS_MEDIUM, CARD_DESCRIPTION_SIZE, theme.muted)
                     for index, line in enumerate(wrap_description(project.description)))
     label = printable(project.label, FontEnum.MONO_MEDIUM)
-    footer = (text_path(label, CARD_PADDING, CARD_LABEL_Y, FontEnum.MONO_MEDIUM, CARD_LABEL_SIZE, theme.accent)
+    footer = (text_path(label, CARD_PADDING, CARD_LABEL_Y, FontEnum.MONO_MEDIUM, CARD_LABEL_SIZE, theme.label)
               if label
               else "")
 
@@ -311,10 +375,35 @@ def render_card(project: Project,
     return _svg(CARD_WIDTH, CARD_HEIGHT, f"{project.repo}: {project.description}",
                 _box(0, 0, CARD_WIDTH, CARD_HEIGHT, CARD_RADIUS, theme.card, theme.border)
                 + motion
-                + f'<rect x="{CARD_MARK_X}" y="{CARD_MARK_Y}" width="{CARD_MARK_WIDTH}" height="{CARD_MARK_HEIGHT}" fill="{theme.accent}"/>'
-                + text_path(project.repo, CARD_PADDING, CARD_TITLE_Y, FontEnum.MONO_BOLD, CARD_TITLE_SIZE, theme.foreground)
+                + f'<rect x="{CARD_MARK_X}" y="{CARD_MARK_Y}" width="{CARD_MARK_SIZE}" height="{CARD_MARK_SIZE}" rx="{ACCENT_RADIUS}" '
+                  f'fill="{theme.accent}"/>'
+                + text_path(project.repo, CARD_TITLE_X, CARD_TITLE_Y, FontEnum.MONO_BOLD, CARD_TITLE_SIZE, theme.foreground)
                 + lines
                 + footer)
+
+
+def render_legend(kind: ProjectKindEnum,
+                  title: str,
+                  name: str,
+                  theme: Theme) -> str:
+    """Рисует плитку легенды с живой анимацией своего вида проекта
+
+    Args:
+        kind: Вид проекта
+        title: Название вида
+        name: Название анимации
+        theme: Тема оформления
+
+    Returns:
+        Текст SVG
+    """
+    motion = render_motion(kind, theme, LEGEND_DELAYS[kind], (LEGEND_WIDTH, LEGEND_HEIGHT, SMALL_RADIUS), LEGEND_CURSOR)
+
+    return _svg(LEGEND_WIDTH, LEGEND_HEIGHT, f"{title}: {name}",
+                _box(0, 0, LEGEND_WIDTH, LEGEND_HEIGHT, SMALL_RADIUS, theme.card, theme.border)
+                + motion
+                + text_path(title, LEGEND_PADDING, LEGEND_TITLE_Y, FontEnum.MONO_BOLD, LEGEND_TITLE_SIZE, theme.foreground)
+                + text_path(name, LEGEND_PADDING, LEGEND_NAME_Y, FontEnum.MONO_MEDIUM, LEGEND_NAME_SIZE, theme.label))
 
 
 def render_stats(stats: ProfileStats, theme: Theme) -> str:
@@ -335,7 +424,7 @@ def render_stats(stats: ProfileStats, theme: Theme) -> str:
     for index, (value, caption) in enumerate(metrics):
         x = STATS_PADDING + index * (tile_width + TILE_GAP)
         tiles += (_box(x, TILE_Y, tile_width, TILE_HEIGHT, CARD_RADIUS, theme.card, theme.border)
-                  + text_path(str(value), x + TILE_PADDING, TILE_Y + TILE_VALUE_Y, FontEnum.MONO_BOLD, TILE_VALUE_SIZE, theme.accent)
+                  + text_path(str(value), x + TILE_PADDING, TILE_Y + TILE_VALUE_Y, FontEnum.MONO_BOLD, TILE_VALUE_SIZE, theme.label)
                   + text_path(caption, x + TILE_PADDING, TILE_Y + TILE_CAPTION_Y, FontEnum.SANS_MEDIUM, STATS_FONT_SIZE, theme.muted))
 
     bar = ""
@@ -355,14 +444,9 @@ def render_stats(stats: ProfileStats, theme: Theme) -> str:
         offset += width
         legend_x += LEGEND_TEXT_X + text_width(caption, FontEnum.SANS_MEDIUM, STATS_FONT_SIZE) + LEGEND_GAP
 
-    cells = ""
-
-    for column, week in enumerate(stats.weeks):
-        for row, count in enumerate(week):
-            level = heat_level(count)
-            cells += (f'<rect x="{STATS_PADDING + column * (HEAT_CELL + HEAT_GAP)}" y="{HEAT_TOP + row * (HEAT_CELL + HEAT_GAP)}" '
-                      f'width="{HEAT_CELL}" height="{HEAT_CELL}" rx="{HEAT_RADIUS}" fill="{theme.accent if level else theme.border}" '
-                      f'fill-opacity="{HEAT_ALPHAS[level]}"/>')
+    cells = "".join(_heat_cell(STATS_PADDING + column * (HEAT_CELL + HEAT_GAP), HEAT_TOP + row * (HEAT_CELL + HEAT_GAP), heat_level(count), theme)
+                    for column, week in enumerate(stats.weeks)
+                    for row, count in enumerate(week))
 
     # Числа и языки повторены в подписи: контуры букв экранный диктор не прочитает
     description = ", ".join([f"{value} {caption}" for value, caption in metrics]
@@ -375,5 +459,6 @@ def render_stats(stats: ProfileStats, theme: Theme) -> str:
                   f'rx="{BAR_HEIGHT // 2}"/></clipPath>'
                   f'<g clip-path="url(#bar)">{bar}</g>'
                 + legend
-                + cells)
+                + cells
+                + _heat_scale(theme))
 # endregion Rendering
