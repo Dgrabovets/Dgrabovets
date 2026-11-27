@@ -17,15 +17,16 @@ class Theme:
     language_colors: tuple[str, ...]
 
 
-# Тёмная тема бренда Aeternus, значения из tokens.json бренда, контраст текста выше 4.5:1
+# Тёмная тема Aeternus Bordeaux, значения из tokens.json этой темы бренда, контраст текста выше 4.5:1
 DARK = Theme(name="dark",
              background="#000000",
-             card="#03100a",
-             border="#232a25",
-             foreground="#f3f2ee",
-             muted="#a4a69f",
-             accent="#5fe08a",
-             language_colors=("#5fe08a", "#2fd4c0", "#1c6b47", "#a4a69f", "#f3f2ee"))
+             card="#14040a",
+             border="#2e181f",
+             foreground="#d9c6c6",
+             muted="#998a8e",
+             accent="#d4637e",
+             # Соседние цвета различаются по светлоте, иначе бордовые доли полосы сливаются
+             language_colors=("#d4637e", "#a3173d", "#d9c6c6", "#7e1f4a", "#998a8e"))
 
 # Светлая тема бренда пока черновик, поэтому под светлыми именами файлов лежит тёмное оформление
 LIGHT = replace(DARK, name="light")
