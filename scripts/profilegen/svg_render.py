@@ -10,8 +10,8 @@ from .profile_stats import ProfileStats
 from .project import Project
 from .theme import Theme
 
-# Готовая шапка бренда с текстом в контурах и анимированной петлёй, копия `assets/header-dark.svg` из папки бренда
-BANNER_PATH = Path(__file__).with_name("header.svg")
+# Готовые шапки бренда с текстом в контурах и анимированной петлёй, копии `assets/header-<тема>.svg` из папки темы бренда
+BANNER_DIR = Path(__file__).parent
 
 # Скругления рамок: заголовки и значки, карточки и плитки, блок статистики как у шапки
 SMALL_RADIUS = 8
@@ -230,13 +230,16 @@ def _language_caption(language: str, percent: float) -> str:
 
 
 # region Rendering
-def render_banner() -> str:
-    """Читает шапку бренда, она одна на обе темы
+def render_banner(theme: Theme) -> str:
+    """Читает шапку бренда нужной темы
+
+    Args:
+        theme: Тема оформления
 
     Returns:
         Текст SVG
     """
-    return BANNER_PATH.read_text(encoding="utf-8")
+    return (BANNER_DIR / f"header-{theme.name}.svg").read_text(encoding="utf-8")
 
 
 def render_heading(title: str, theme: Theme) -> str:

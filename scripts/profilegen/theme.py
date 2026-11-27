@@ -1,6 +1,6 @@
 """Палитра темы"""
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
@@ -21,14 +21,21 @@ class Theme:
 DARK = Theme(name="dark",
              background="#000000",
              card="#14040a",
-             border="#2e181f",
-             foreground="#d9c6c6",
-             muted="#998a8e",
-             accent="#d4637e",
+             border="#63303f",
+             foreground="#f6f1ef",
+             muted="#c4b8bb",
+             accent="#fa5f80",
              # Соседние цвета различаются по светлоте, иначе бордовые доли полосы сливаются
-             language_colors=("#d4637e", "#a3173d", "#d9c6c6", "#7e1f4a", "#998a8e"))
+             language_colors=("#fa5f80", "#d4204f", "#f6f1ef", "#a82b62", "#c4b8bb"))
 
-# Светлая тема бренда пока черновик, поэтому под светлыми именами файлов лежит тёмное оформление
-LIGHT = replace(DARK, name="light")
+# Светлая тема Aeternus Bordeaux из того же tokens.json, для страницы GitHub в светлом оформлении
+LIGHT = Theme(name="light",
+              background="#f7f2ee",
+              card="#ffffff",
+              border="#e0d3ce",
+              foreground="#17080c",
+              muted="#55454a",
+              accent="#650d27",
+              language_colors=("#650d27", "#b5566c", "#17080c", "#d3a3ae", "#8e7278"))
 
 THEMES = (DARK, LIGHT)

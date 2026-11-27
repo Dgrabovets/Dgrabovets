@@ -59,7 +59,7 @@ class SvgRenderTests(unittest.TestCase):
                              weeks=[[0, 1, 5, 9, 0, 0, 2]])
 
         for theme in THEMES:
-            for text in (render_banner(), render_heading("Current", theme), render_badge("C#", theme),
+            for text in (render_banner(theme), render_heading("Current", theme), render_badge("C#", theme),
                          render_card(project, theme), render_stats(stats, theme)):
                 ElementTree.fromstring(text)
                 # GitHub не подгружает веб-шрифты, поэтому весь текст должен быть контурами
@@ -70,14 +70,17 @@ class SvgRenderTests(unittest.TestCase):
         project = Project(repo="A", section="current", description="B", label="")
         stats = ProfileStats(commits=0, pull_requests=0, languages=[], weeks=[])
 
-        self.assertIn('class="flow"', render_banner())
+        for theme in THEMES:
+            self.assertIn('class="flow"', render_banner(theme))
 
         for text in (render_heading("Current", DARK), render_badge("C#", DARK), render_card(project, DARK), render_stats(stats, DARK)):
             self.assertNotIn("flow", text)
 
-    def test_light_files_use_dark_brand_colors(self) -> None:
-        """Светлая тема бренда не утверждена: обе версии картинок одинаковые"""
-        self.assertEqual(render_badge("C#", LIGHT), render_badge("C#", DARK))
+    def test_light_files_use_light_colors(self) -> None:
+        """Светлые картинки рисуются своей палитрой: фон шапки и значка не остаётся тёмным"""
+        self.assertIn(f'fill="{LIGHT.background}"', render_banner(LIGHT))
+        self.assertIn(f'fill="{LIGHT.card}"', render_badge("C#", LIGHT))
+        self.assertNotIn(DARK.card, render_badge("C#", LIGHT))
 
 
 if __name__ == "__main__":

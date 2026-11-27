@@ -115,7 +115,7 @@ def main() -> None:
     headings = HEADING_PATTERN.findall(readme)
 
     for theme in THEMES:
-        _write(assets / f"banner-{theme.name}.svg", render_banner())
+        _write(assets / f"banner-{theme.name}.svg", render_banner(theme))
         _write(assets / f"stats-{theme.name}.svg", render_stats(stats, theme))
 
         for title in headings:
