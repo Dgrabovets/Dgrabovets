@@ -59,8 +59,19 @@ Away from code: travelling (30+ countries so far), hiking and trekking, weightli
 
 <h2></h2>
 
-### <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/stats-dark.svg"><img src="assets/headings/stats-light.svg" alt="Stats"></picture>
+### <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/animations-legend-dark.svg"><img src="assets/headings/animations-legend-light.svg" alt="Animations legend"></picture>
+
+<p align="center">
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/legend/backend-dark.svg"><img src="assets/legend/backend-light.svg" alt="Backend: light columns, data flowing through a service" width="200"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/legend/app-dark.svg"><img src="assets/legend/app-light.svg" alt="App: soft glare, light passing over a screen" width="200"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/legend/tool-dark.svg"><img src="assets/legend/tool-light.svg" alt="Tool: terminal cursor, waiting for your command" width="200"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/legend/early-dark.svg"><img src="assets/legend/early-light.svg" alt="Early stage: glowing border, still taking shape" width="200"></picture>
+</p>
+
+<h2></h2>
+
+### <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/statistics-dark.svg"><img src="assets/headings/statistics-light.svg" alt="Statistics"></picture>
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg"><img src="assets/stats-light.svg" alt="GitHub statistics" width="100%"></picture>
 
-<sub>Cards and stats are generated daily by a workflow in this repository.</sub>
+<sub>Cards and statistics are generated daily by a workflow in this repository.</sub>

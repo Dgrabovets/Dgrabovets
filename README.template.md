@@ -37,8 +37,14 @@ Away from code: travelling (30+ countries so far), hiking and trekking, weightli
 
 <h2></h2>
 
-### Stats
+### Animations legend
+
+{{legend}}
+
+<h2></h2>
+
+### Statistics
 
 {{stats}}
 
-<sub>Cards and stats are generated daily by a workflow in this repository.</sub>
+<sub>Cards and statistics are generated daily by a workflow in this repository.</sub>
