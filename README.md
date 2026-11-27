@@ -1,6 +1,8 @@
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg"><img src="assets/banner-light.svg" alt="Aeternus. Backend developer, C# / .NET. APIs, high-load services, integrations. Backend systems made to keep running." width="100%"></picture></p>
 
-## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/about-dark.svg"><img src="assets/headings/about-light.svg" alt="About"></picture>
+<h2></h2>
+
+### <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/about-dark.svg"><img src="assets/headings/about-light.svg" alt="About"></picture>
 
 **At work, ChiTech**
 
@@ -13,7 +15,9 @@ I'm based in Novi Sad and open to relocation. I studied applied informatics at R
 
 Away from code: travelling (30+ countries so far), hiking and trekking, weightlifting.
 
-## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/stack-dark.svg"><img src="assets/headings/stack-light.svg" alt="Stack"></picture>
+<h2></h2>
+
+### <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/stack-dark.svg"><img src="assets/headings/stack-light.svg" alt="Stack"></picture>
 
 <p>
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/csharp-dark.svg"><img src="assets/badges/csharp-light.svg" alt="C#"></picture>
@@ -31,7 +35,9 @@ Away from code: travelling (30+ countries so far), hiking and trekking, weightli
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/badges/python-dark.svg"><img src="assets/badges/python-light.svg" alt="Python"></picture>
 </p>
 
-## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/current-dark.svg"><img src="assets/headings/current-light.svg" alt="Current"></picture>
+<h2></h2>
+
+### <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/current-dark.svg"><img src="assets/headings/current-light.svg" alt="Current"></picture>
 
 <p align="center">
 <a href="https://github.com/Dgrabovets/UnifiedBand"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/UnifiedBand-dark.svg"><img src="assets/cards/UnifiedBand-light.svg" alt="UnifiedBand: Claude Code plugin: a band above the prompt, Ponytail and a model router built in, and a local usage Board" width="400"></picture></a>
@@ -42,14 +48,18 @@ Away from code: travelling (30+ countries so far), hiking and trekking, weightli
 <a href="https://github.com/Dgrabovets/InventoryApp"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/InventoryApp-dark.svg"><img src="assets/cards/InventoryApp-light.svg" alt="InventoryApp: Home inventory app built with .NET MAUI and SQLite" width="400"></picture></a>
 </p>
 
-## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/finished-dark.svg"><img src="assets/headings/finished-light.svg" alt="Finished"></picture>
+<h2></h2>
+
+### <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/finished-dark.svg"><img src="assets/headings/finished-light.svg" alt="Finished"></picture>
 
 <p align="center">
 <a href="https://github.com/Dgrabovets/BottleGameAPI"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/BottleGameAPI-dark.svg"><img src="assets/cards/BottleGameAPI-light.svg" alt="BottleGameAPI: ASP.NET Core and PostgreSQL backend for a Telegram mini-app game, with a demo mode" width="400"></picture></a>
 <a href="https://github.com/Dgrabovets/BottleGameAdministrationPanel"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/cards/BottleGameAdministrationPanel-dark.svg"><img src="assets/cards/BottleGameAdministrationPanel-light.svg" alt="BottleGameAdministrationPanel: Admin panel for BottleGameAPI, built with Next.js and TypeScript" width="400"></picture></a>
 </p>
 
-## <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/stats-dark.svg"><img src="assets/headings/stats-light.svg" alt="Stats"></picture>
+<h2></h2>
+
+### <picture><source media="(prefers-color-scheme: dark)" srcset="assets/headings/stats-dark.svg"><img src="assets/headings/stats-light.svg" alt="Stats"></picture>
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg"><img src="assets/stats-light.svg" alt="GitHub statistics" width="100%"></picture>
 

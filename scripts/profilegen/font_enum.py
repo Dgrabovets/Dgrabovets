@@ -8,4 +8,4 @@ class FontEnum(str, Enum):
 
     MONO_MEDIUM = "mono-500"
     MONO_BOLD = "mono-700"
-    SANS_REGULAR = "sans-400"
+    SANS_MEDIUM = "sans-500"

@@ -1,6 +1,8 @@
 <p align="center">{{banner}}</p>
 
-## About
+<h2></h2>
+
+### About
 
 **At work, ChiTech**
 
@@ -13,21 +15,29 @@ I'm based in Novi Sad and open to relocation. I studied applied informatics at R
 
 Away from code: travelling (30+ countries so far), hiking and trekking, weightlifting.
 
-## Stack
+<h2></h2>
+
+### Stack
 
 <p>
 {{stack}}
 </p>
 
-## Current
+<h2></h2>
+
+### Current
 
 {{current}}
 
-## Finished
+<h2></h2>
+
+### Finished
 
 {{finished}}
 
-## Stats
+<h2></h2>
+
+### Stats
 
 {{stats}}
 

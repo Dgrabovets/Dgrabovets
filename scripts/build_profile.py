@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from profilegen import settings
 from profilegen.github_client import GithubClient
 from profilegen.project import Project
+from profilegen.project_kind_enum import ProjectKindEnum
 from profilegen.svg_render import render_badge, render_banner, render_card, render_heading, render_stats
 from profilegen.theme import THEMES
 
@@ -23,8 +24,9 @@ STACK = (("csharp", "C#"), ("dotnet", ".NET"), ("aspnet-core", "ASP.NET Core"), 
          ("docker", "Docker"), ("ci-cd", "CI/CD"), ("automated-tests", "Automated tests"),
          ("typescript", "TypeScript"), ("python", "Python"))
 
-# Заголовок раздела в шаблоне: одно слово, оно же имя файла картинки
-HEADING_PATTERN = re.compile(r"^## (\w+)$", re.MULTILINE)
+# Заголовок раздела в шаблоне: одно слово, оно же имя файла картинки. Уровень третий, потому что под вторым GitHub рисует черту,
+# а черта нужна над названием: её даёт пустой `<h2></h2>` перед заголовком
+HEADING_PATTERN = re.compile(r"^### (\w+)$", re.MULTILINE)
 
 # Ширина карточки в пикселях: на широком экране две в строке, на телефоне одна во всю ширину и текст читается
 CARD_DISPLAY_WIDTH = "400"
@@ -36,6 +38,9 @@ FULL_WIDTH = "100%"
 BANNER_ALT = ("Aeternus. Backend developer, C# / .NET. "
               "APIs, high-load services, integrations. Backend systems made to keep running.")
 STATS_ALT = "GitHub statistics"
+
+# Сдвиг анимации следующей карточки в секундах, чтобы соседние не двигались разом
+MOTION_STAGGER = 1.7
 
 
 # region Building
@@ -82,13 +87,15 @@ def _load_projects(repos: dict[str, dict]) -> list[Project]:
         Проекты в порядке файла, поле `label` из файла берётся, только если GitHub не нашёл язык
 
     Raises:
-        KeyError: Если репозиторий из файла не найден среди публичных
+        KeyError: Если репозиторий из файла не найден среди публичных или у записи нет `kind`
+        ValueError: Если вид проекта неизвестен
     """
     return [Project(repo=entry["repo"],
                     section=entry["section"],
                     # Пустая строка в описании разорвала бы HTML-блок README
                     description=" ".join(entry["description"].split()),
-                    label=repos[entry["repo"]]["language"] or entry.get("label", ""))
+                    label=repos[entry["repo"]]["language"] or entry.get("label", ""),
+                    kind=ProjectKindEnum(entry["kind"]))
             for entry in json.loads((settings.ROOT_DIR / "projects.json").read_text(encoding="utf-8"))]
 
 
@@ -124,10 +131,10 @@ def main() -> None:
         for slug, label in STACK:
             _write(assets / "badges" / f"{slug}-{theme.name}.svg", render_badge(label, theme))
 
-        for project in projects:
-            _write(assets / "cards" / f"{project.repo}-{theme.name}.svg", render_card(project, theme))
+        for index, project in enumerate(projects):
+            _write(assets / "cards" / f"{project.repo}-{theme.name}.svg", render_card(project, theme, index * MOTION_STAGGER))
 
-    readme = HEADING_PATTERN.sub(lambda match: f"## {_picture(f'assets/headings/{match[1].lower()}', match[1])}", readme)
+    readme = HEADING_PATTERN.sub(lambda match: f"### {_picture(f'assets/headings/{match[1].lower()}', match[1])}", readme)
     readme = readme.replace("{{banner}}", _picture("assets/banner", BANNER_ALT, FULL_WIDTH))
     readme = readme.replace("{{stack}}", "\n".join(_picture(f"assets/badges/{slug}", label) for slug, label in STACK))
     readme = readme.replace("{{stats}}", _picture("assets/stats", STATS_ALT, FULL_WIDTH))

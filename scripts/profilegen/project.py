@@ -2,6 +2,8 @@
 
 from dataclasses import dataclass
 
+from .project_kind_enum import ProjectKindEnum
+
 
 @dataclass(frozen=True)
 class Project:
@@ -12,3 +14,5 @@ class Project:
     description: str
     # Подпись внизу карточки: язык из GitHub, а если его нет, значение из projects.json
     label: str
+    # Вид проекта, от него зависит анимация карточки
+    kind: ProjectKindEnum = ProjectKindEnum.TOOL
